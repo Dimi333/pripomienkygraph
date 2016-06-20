@@ -18,6 +18,8 @@
 			<script type="text/javascript" src="app/projekty/projekty.js"></script>
 			<script type="text/javascript" src="app/pripomienky/pripomienky.js"></script>
 			<script type="text/javascript" src="app/pridaj/pridaj.js"></script>
+			<script type="text/javascript" src="app/projekt/projekt.js"></script>
+			<script type="text/javascript" src="app/prihlasenie/prihlasenie.js"></script>
 			<script type="text/javascript" src="app/uzivatelia/uzivatelia.js"></script>
 			<script type="text/javascript" src="app/dataServis/dataServis.js"></script>
 
@@ -25,9 +27,8 @@
 			<base href="http://localhost:3000/">
 		</head>
 		<body ng-app="couch" ng-controller="HlCtrl as $ctrl">
-			<hlmenu></hlmenu>
-
 			<div class="obsah">
+				<hlmenu></hlmenu>
 				<ng-view></ng-view>
 			</div>
 		</body>

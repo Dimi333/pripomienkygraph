@@ -1,17 +1,15 @@
 app.component('hlmenu', {
-	template: ` 
-				<button ng-click="$ctrl.chod('uzivatelia')">užívatelia</button>
-				<button ng-click="$ctrl.chod('pripomienky')">pripomienky</button>
-				<button ng-click="$ctrl.chod('projekty')">projekty</button>
-				|
-				<button ng-click="$ctrl.chod('pridajProjekt')">[+] projekt</button>
-				<button ng-click="$ctrl.chod('pridajPripomienku')">[+] pripomienka</button>
-				<button ng-click="$ctrl.chod('pridajUzivatela')">[+] užívateľ</button>
+	template: ` <div ng-show="$ctrl.ds.prihlaseny">
+					<button ng-click="$ctrl.chod('projekty')">Projekty</button>
+					<button ng-click="$ctrl.chod('uzivatelia')">Užívatelia</button>
+					<button ng-click="$ctrl.chod('pripomienky')">Pripomienky</button>
+				<br><br>
+				</div>
 			`,
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
-		_this.DataServis = DataServis;
+		_this.ds = DataServis;
 		_this.vysledok;
 		_this.druhUdajov;
 

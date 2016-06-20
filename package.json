@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Dimi333/pripomienkygraph#readme",
   "dependencies": {
     "body-parser": "^1.15.1",
+    "cors": "^2.7.1",
     "express": "^4.14.0",
     "neo4j": "^2.0.0-RC2",
     "request": "^2.72.0"

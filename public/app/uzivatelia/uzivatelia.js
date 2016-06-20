@@ -1,5 +1,5 @@
 app.component('uzivatelia', {
-	template: ` 
+	template: `
 				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
 			`,
 

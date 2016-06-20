@@ -3,7 +3,7 @@ app.component('zobrazUdaje', {
 		udaje: '=',
 		druh: '='
 	},
-	template: ` 
+	template: `
 			<div ng-switch="$ctrl.druh">
 				<div ng-switch-when="uzivatelia">
 					<table>
@@ -14,7 +14,7 @@ app.component('zobrazUdaje', {
 					</tr>
 					<tr ng-repeat="u in $ctrl.udaje">
 						<td>
-							<a href="/uzivatel/{{u.u._id}}">{{u.u.properties.meno}}</a>
+							<button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button>
 						</td>
 						<td>
 							{{u.pocetPripomienok}}
@@ -31,13 +31,19 @@ app.component('zobrazUdaje', {
 					<tr>
 						<th>Znenie</th>
 						<th>Zadal</th>
+						<th>Datum</th>
 					</tr>
 					<tr ng-repeat="u in $ctrl.udaje">
 						<td>
-							<a href="/pripomienka/{{u.p._id}}">{{u.p.properties.znenie}}</a>
+							<input type="checkbox" ng-show="{{u.v2.properties.kedy}}" checked>
+							<input type="checkbox" ng-hide="{{u.v2.properties.kedy}}" ng-click="$ctrl.ds.dokonciPripomienku(u.p._id);">
+							<button ng-click="$ctrl.ds.chod('/pripomienka/'+ u.p._id);">{{u.p.properties.znenie}}</button>
 						</td>
 						<td>
-							<a href="/uzivatel/{{u.u._id}}">{{u.u.properties.meno}}</a>
+							<button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button>
+						</td>
+						<td>
+							{{u.v.properties.kedy | date:'dd/MM/yyyy'}}
 						</td>
 					</tr>
 					</table>
@@ -52,13 +58,13 @@ app.component('zobrazUdaje', {
 					</tr>
 					<tr ng-repeat="u in $ctrl.udaje">
 						<td>
-							<a href="/projekt/{{u.n._id}}">{{u.n.properties.meno}}</a>
+							<button ng-click="$ctrl.ds.chod('/projekt/'+ u.n._id);">{{u.n.properties.meno}}</button>
 						</td>
 						<td>
 							{{u.pocetPripomienok}}
 						</td>
 						<td>
-							<a href="/uzivatel/{{u.u._id}}">{{u.u.properties.meno}}</a>
+							<button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button>
 						</td>
 					</tr>
 					</table>
@@ -66,7 +72,8 @@ app.component('zobrazUdaje', {
 			</div>
 			`,
 
-	controller: function() {
+	controller: function(DataServis) {
 		var _this = this;
+		_this.ds = DataServis;
 	}
 });
