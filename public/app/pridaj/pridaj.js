@@ -12,7 +12,13 @@ app.component('pridaj', {
 				</div>
 				<div ng-switch-when="pripomienka">
 					<input type="text" placeholder="Znenie pripomienky" ng-model="$ctrl.zneniePripomienky">
-					<button ng-click="$ctrl.ds.pridajPripomienku($ctrl.zneniePripomienky, $ctrl.ds.id, $ctrl.pid)">[+] Pridaj pripomieku</button>
+					Priorita: <select ng-model="$ctrl.priorita">
+						<option value="-1">nízka</option>
+						<option value="0" selected>stredná</option>
+						<option value="1">vysoká</option>
+						<option value="2">ASAP</option>
+					</select>
+					<button ng-click="$ctrl.ds.pridajPripomienku($ctrl.zneniePripomienky, $ctrl.ds.id, $ctrl.pid, $ctrl.priorita)">[+] Pridaj pripomieku</button>
 				</div>
 				<div ng-switch-when="projekt">
 					<input type="text" placeholder="Meno projektu" ng-model="$ctrl.menoProjektu">
@@ -25,7 +31,6 @@ app.component('pridaj', {
 		var _this = this;
 		_this.ds = DataServis;
 
-		_this.menoProjektu;
-		_this.zadavatel;
+		_this.priorita = 0;
 	}
 });

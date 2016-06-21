@@ -30,6 +30,7 @@ app.component('zobrazUdaje', {
 					<table>
 					<tr>
 						<th>Znenie</th>
+						<th>Priorita</th>
 						<th>Zadal</th>
 						<th>Pridané</th>
 					</tr>
@@ -37,13 +38,20 @@ app.component('zobrazUdaje', {
 						<td>
 							<input type="checkbox" ng-show="{{u.v2.properties.kedy}}" checked disabled>
 							<input type="checkbox" ng-hide="{{u.v2.properties.kedy}}" ng-click="$ctrl.ds.dokonciPripomienku(u.p._id);">
-							<button ng-click="$ctrl.ds.chod('/pripomienka/'+ u.p._id);">{{u.p.properties.znenie}}</button>
+							<button ng-click="$ctrl.ds.chod('/pripomienka/'+ u.p._id);"><span ng-hide="{{u.v2.properties.kedy}}">{{u.p.properties.znenie}}</span><s ng-show="{{u.v2.properties.kedy}}">{{u.p.properties.znenie}}</s></button>
+						</td>
+						<td>
+							<span ng-if="u.p.properties.priorita === -1" class="nizka">nízka</span>
+							<span ng-if="u.p.properties.priorita === 0" class="stredna">stredná</span>
+							<span ng-if="u.p.properties.priorita === 1" class="vysoka">vysoká</span>
+							<span ng-if="u.p.properties.priorita === 2" class="vysoka2">ASAP</span>
+							<span ng-if="!u.p.properties.priorita">stredná</span>
 						</td>
 						<td>
 							<button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button>
 						</td>
 						<td>
-							{{u.v.properties.kedy | date:'dd/MM/yyyy'}}
+							{{u.v.properties.kedy | date:'dd/MM/yyyy HH:mm:ss'}}
 						</td>
 					</tr>
 					</table>

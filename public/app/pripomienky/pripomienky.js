@@ -3,6 +3,7 @@ app.component('pripomienky', {
 		pid: '@'
 	},
 	template: `
+				<h2>Všetky pripomienky</h2>
 				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
 			`,
 
@@ -42,7 +43,7 @@ app.component('pripomienky', {
 				_this.pripomienkyPreProjekt(_this.pid);
 			} else {
 				_this.query('pripomienky');
-			}		
+			}
 		});
 	}
 });

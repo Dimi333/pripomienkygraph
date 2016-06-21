@@ -1,5 +1,5 @@
 app.component('hlmenu', {
-	template: ` <div ng-show="$ctrl.ds.prihlaseny">
+	template: ` <div ng-show="$ctrl.ds.prihlaseny" class="hlmenu">
 					<button ng-click="$ctrl.chod('projekty')">Projekty</button>
 					<button ng-click="$ctrl.chod('uzivatelia')">Užívatelia</button>
 					<button ng-click="$ctrl.chod('pripomienky')">Pripomienky</button>

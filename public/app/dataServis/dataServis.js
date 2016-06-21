@@ -19,8 +19,8 @@ app.service('DataServis', function($rootScope, $http, $location) {
 		})
 	}
 
-	_this.pridajPripomienku = function(znenie, zadavatelID, projektID) {
-		$http.post('/put/pripomienka', JSON.stringify({znenie: znenie, zadavatelID: zadavatelID, projektID: projektID})).then(function(resp) {
+	_this.pridajPripomienku = function(znenie, zadavatelID, projektID, priorita) {
+		$http.post('/put/pripomienka', JSON.stringify({znenie: znenie, zadavatelID: zadavatelID, projektID: projektID, priorita: priorita})).then(function(resp) {
 			$rootScope.$emit('pridanaPripomienka');
 		})
 	}

@@ -1,5 +1,6 @@
 app.component('projekty', {
-	template: ` 
+	template: `
+				<h2>Projekty</h2>
 				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
 			`,
 
@@ -16,7 +17,7 @@ app.component('projekty', {
 		_this.query('projekty');
 
 		$rootScope.$on('pridanyProjekt', function(e, d) {
-			_this.query('projekty');	
+			_this.query('projekty');
 		});
 	}
 });
