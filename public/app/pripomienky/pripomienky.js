@@ -6,7 +6,7 @@ app.component('pripomienky', {
 				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
 			`,
 
-	controller: function($http, DataServis) {
+	controller: function($http, DataServis, $rootScope) {
 		_this = this;
 		_this.ds = DataServis;
 
@@ -28,5 +28,21 @@ app.component('pripomienky', {
 
 			_this.query('pripomienky');
 		}
+
+		$rootScope.$on('pridanaPripomienka', function(e, d) {
+			if(_this.pid) {
+				_this.pripomienkyPreProjekt(_this.pid);
+			} else {
+				_this.query('pripomienky');
+			}
+		});
+
+		$rootScope.$on('dokoncenaPripomienka', function(e, d) {
+			if(_this.pid) {
+				_this.pripomienkyPreProjekt(_this.pid);
+			} else {
+				_this.query('pripomienky');
+			}		
+		});
 	}
 });

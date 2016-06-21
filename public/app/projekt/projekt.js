@@ -3,8 +3,6 @@ app.component('projekt', {
 		pid: '@'
 	},
 	template: `
-			id p: {{$ctrl.pid}}
-			<br><br>
 			<pridaj co="pripomienka" pid="{{$ctrl.pid}}"></pridaj>
 			<br>
 			Pripomienky pre tento projekt: <br><br>

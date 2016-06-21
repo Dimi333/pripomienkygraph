@@ -31,11 +31,11 @@ app.component('zobrazUdaje', {
 					<tr>
 						<th>Znenie</th>
 						<th>Zadal</th>
-						<th>Datum</th>
+						<th>Pridané</th>
 					</tr>
 					<tr ng-repeat="u in $ctrl.udaje">
 						<td>
-							<input type="checkbox" ng-show="{{u.v2.properties.kedy}}" checked>
+							<input type="checkbox" ng-show="{{u.v2.properties.kedy}}" checked disabled>
 							<input type="checkbox" ng-hide="{{u.v2.properties.kedy}}" ng-click="$ctrl.ds.dokonciPripomienku(u.p._id);">
 							<button ng-click="$ctrl.ds.chod('/pripomienka/'+ u.p._id);">{{u.p.properties.znenie}}</button>
 						</td>

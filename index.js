@@ -99,6 +99,24 @@ app.post('/put/uzivatel', function (req, res) {
         res.end(JSON.stringify(results, null, 4));
     });
 });
+app.post('/put/zmenUdajeUzivatela', function (req, res) {
+    db.cypher({
+        query: 'match (u:Uzivatel) where ID(u)='+req.body.id+' set u.meno="'+req.body.meno+'", u.heslo="'+req.body.heslo+'", u.mejl="'+req.body.mejl+'" return u'
+    }, function (err, results) {
+        if (err) throw err;
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(results, null, 4));
+    });
+});
+app.post('/get/uzivatel', function (req, res) {
+    db.cypher({
+        query: 'match (u:Uzivatel) where ID(u)='+req.body.id+' return u'
+    }, function (err, results) {
+        if (err) throw err;
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(results, null, 4));
+    });
+});
 app.all('*', function(req, res) {
   res.redirect('/');
 });

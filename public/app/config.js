@@ -31,7 +31,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($ro
 			template: '<uzivatelia></uzivatelia><br><pridaj co="uzivatel"></pridaj>'
 		})
 		.when('/uzivatel/:id', {
-			template: 'uzivatel ID {{$ctrl.id}}',
+			template: '<uzivatel idu="{{$ctrl.id}}"></uzivatel>',
 			controller: function($routeParams) {
 				_this = this;
 				_this.id = $routeParams.id;
