@@ -2,9 +2,11 @@ app.component('prihlasenie', {
 	template: `
 		<center>
 			<h1>Pripomienkovač</h1>
+			<form ng-submit="$ctrl.ds.prihlas($ctrl.prihlMeno, $ctrl.prihlHeslo)">
 			<input type="text" ng-model="$ctrl.prihlMeno" placeholder="Meno"><br>
-			<input type="password" ng-model="$ctrl.prihlHeslo" placeholder="Heslo"><br>
-			<button ng-click="$ctrl.ds.prihlas($ctrl.prihlMeno, $ctrl.prihlHeslo)">Prihlás</button>
+			<input type="password" ng-model="$ctrl.prihlHeslo" placeholder="Heslo"><br><br>
+			<button type="submit">Prihlás</button>
+			</form>
 		</center>
 			`,
 

@@ -4,32 +4,46 @@ app.component('pripomienka', {
 	},
 	template: `
 		<h2>Pripomienka</h2>
-		<table>
+		<table class="pripomienka">
+		<tr>
+			<th></th>
+			<th></th>
+		</tr>
 		<tr>
 			<td>ID</td>
 			<td>{{$ctrl.id}}</td>
 		</tr>
 		<tr>
-			<td>znenie</td>
-			<td>{{$ctrl.znenie}}</td>
+			<td>Znenie</td>
+			<td><textarea ng-model="$ctrl.znenie"></textarea></td>
 		</tr>
 		<tr>
-			<td>zadavatel</td>
+			<td>Zadávateľ</td>
 			<td>{{$ctrl.zadavatel}}</td>
 		</tr>
 		<tr>
-			<td>kedy</td>
-			<td>{{$ctrl.kedy | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+			<td>Zapracoval</td>
+			<td>{{$ctrl.zapracoval | akNieje: '-'}}</td>
 		</tr>
 		<tr>
-			<td>priorita</td>
-			<td>{{$ctrl.priorita}}</td>
+			<td>Čas zapracovania</td>
+			<td>{{$ctrl.zapracovane | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</td>
+		</tr>
+		<tr>
+			<td>Čas zadania</td>
+			<td>{{$ctrl.kedy | date:'dd/MM/yyyy HH:mm'}}</td>
+		</tr>
+		<tr>
+			<td>Priorita</td>
+			<td><priorita stupen="$ctrl.priorita"></priorita></td>
 		</tr>
 		<tr>
 			<td>Projekt</td>
 			<td>{{$ctrl.patri}}</td>
 		</tr>
 		</table>
+		<br>
+		<button ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie);">Zmeň pripomienku</button>
 			`,
 
 	controller: function($http, DataServis) {
@@ -43,6 +57,8 @@ app.component('pripomienka', {
 				_this.kedy = resp.data[0].v.properties.kedy;
 				_this.priorita = resp.data[0].p.properties.priorita;
 				_this.patri = resp.data[0].r.properties.meno;
+				_this.zapracoval = resp.data[0].u2.properties.meno;
+				_this.zapracovane = resp.data[0].v2.properties.kedy;
 			});
 		}
 

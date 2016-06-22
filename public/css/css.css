@@ -1,25 +1,37 @@
 * {
 	font-family: sans-serif;
 }
+body {
+	margin: 0;
+}
 table {
 	width: 100%;
 	border-spacing: 0;
+}
+table.pripomienka textarea {
+	width: 99%
 }
 th {
 	text-align: left;
 }
 tr:nth-child(even) td {
-	background: #eaeaea
+	background: #f9f9f9
 }
 td, th {
 	padding: 4px;
 	text-align: center;
+}
+tr:hover td {
+	background: #ececec;
 }
 td:last-child, th:last-child {
 	text-align: right;
 }
 td:first-child, th:first-child {
 	text-align: left;
+}
+tr:last-child td {
+	border-bottom: 1px solid #f9f9f9
 }
 td button {
 	background: transparent;
@@ -29,6 +41,8 @@ td button {
 	padding: 0;
 	font-size: inherit;
 	color: #1a1ab3;
+	text-align: left;
+	max-width: 80%
 }
 .obsah {
 	padding: 20px;
@@ -41,7 +55,7 @@ td button {
 	background: 0;
 	border: 0;
 	color: #1a1ab3;
-	border-bottom: 1px solid #1a1ab3;
+	/*border-bottom: 1px solid #1a1ab3;*/
 	cursor: pointer;
 	text-transform: uppercase;
 }
@@ -52,3 +66,10 @@ select {
 .stredna {color: inherit}
 .vysoka {color: orange}
 .vysoka2 {color: red}
+.pridavaciFormular {
+	background: #fbfbfb;
+	padding: 8px
+}
+.pridavaciFormular h3 {
+	margin-top: 0
+}

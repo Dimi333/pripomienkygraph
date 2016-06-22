@@ -4,7 +4,7 @@ app.component('uzivatel', {
 	},
 	template: `
 				ID: {{$ctrl.idu}}<br>
-				Meno: <input type="text" ng-model="$ctrl.meno" disabled><br>
+				Meno: <input type="text" ng-model="$ctrl.meno"><br>
 				Heslo: <input type="text" ng-model="$ctrl.heslo"><br>
 				Mejl: <input type="text" ng-model="$ctrl.mejl"><br>
 				<button ng-click="$ctrl.ds.zmenUdajeUzivatela($ctrl.meno, $ctrl.heslo, $ctrl.mejl)">Ulož zmeny</button>

@@ -32,6 +32,8 @@ app.component('zobrazUdaje', {
 						<th>Znenie</th>
 						<th>Priorita</th>
 						<th>Zadal</th>
+						<th>Zapracoval</th>
+						<th>Zapracované</th>
 						<th>Pridané</th>
 					</tr>
 					<tr ng-repeat="u in $ctrl.udaje">
@@ -41,17 +43,20 @@ app.component('zobrazUdaje', {
 							<button ng-click="$ctrl.ds.chod('/pripomienka/'+ u.p._id);"><span ng-hide="{{u.v2.properties.kedy}}">{{u.p.properties.znenie}}</span><s ng-show="{{u.v2.properties.kedy}}">{{u.p.properties.znenie}}</s></button>
 						</td>
 						<td>
-							<span ng-if="u.p.properties.priorita === -1" class="nizka">nízka</span>
-							<span ng-if="u.p.properties.priorita === 0" class="stredna">stredná</span>
-							<span ng-if="u.p.properties.priorita === 1" class="vysoka">vysoká</span>
-							<span ng-if="u.p.properties.priorita === 2" class="vysoka2">ASAP</span>
-							<span ng-if="!u.p.properties.priorita">stredná</span>
+							<priorita stupen="u.p.properties.priorita"></priorita>
 						</td>
 						<td>
-							<button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button>
+							<small><button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button></small>
 						</td>
 						<td>
-							{{u.v.properties.kedy | date:'dd/MM/yyyy HH:mm:ss'}}
+							<small ng-show="u.u2.properties.meno"><button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u2._id);">{{u.u2.properties.meno}}</button></small>
+							<small ng-hide="u.u2.properties.meno">-</small>
+						</td>
+						<td>
+							<small>{{u.v2.properties.kedy | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</small>
+						</td>
+						<td>
+							<small>{{u.v.properties.kedy | date:'dd/MM/yyyy HH:mm'}}</small>
 						</td>
 					</tr>
 					</table>
@@ -62,6 +67,7 @@ app.component('zobrazUdaje', {
 					<tr>
 						<th>Meno</th>
 						<th>Počet pripomienok</th>
+						<th>Nesplnených</th>
 						<th>Zadávateľ projektu</th>
 					</tr>
 					<tr ng-repeat="u in $ctrl.udaje">
@@ -72,7 +78,10 @@ app.component('zobrazUdaje', {
 							{{u.pocetPripomienok}}
 						</td>
 						<td>
-							<button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button>
+							{{u.nesplnenePripomienky}}
+						</td>
+						<td>
+							<small><button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button></small>
 						</td>
 					</tr>
 					</table>

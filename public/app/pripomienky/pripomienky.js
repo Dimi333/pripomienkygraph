@@ -3,7 +3,6 @@ app.component('pripomienky', {
 		pid: '@'
 	},
 	template: `
-				<h2>Všetky pripomienky</h2>
 				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
 			`,
 

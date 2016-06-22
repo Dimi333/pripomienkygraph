@@ -1,4 +1,4 @@
-app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
+app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$compileProvider', function($routeProvider, $locationProvider, $httpProvider, $compileProvider) {
 	$routeProvider
 		.when('/prihlasenie', {
 			template: '<prihlasenie></prihlasenie>'
@@ -25,7 +25,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($ro
 			bindToController: 'true'
 		})
 		.when('/pripomienky', {
-			template: '<pripomienky></pripomienky>'
+			template: '<h2>Všetky pripomienky</h2><pripomienky></pripomienky>'
 		})
 		.when('/uzivatelia', {
 			template: '<uzivatelia></uzivatelia><br><pridaj co="uzivatel"></pridaj>'
@@ -45,10 +45,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($ro
 
 		$locationProvider.html5Mode(true).hashPrefix('*');
 
-		/*$httpProvider.defaults.headers.common = {};
-		$httpProvider.defaults.headers.post = {};
-		$httpProvider.defaults.headers.put = {};
-		$httpProvider.defaults.headers.patch = {};*/
+		$compileProvider.debugInfoEnabled(false);
 }]);
 
 app.run(function($rootScope, $location, DataServis) {
