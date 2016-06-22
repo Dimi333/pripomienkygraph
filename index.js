@@ -2,7 +2,7 @@ var cors = require('cors');
 var express = require('express');
 var neo4j = require('neo4j');
 var bodyParser = require("body-parser");
-var db = new neo4j.GraphDatabase('http://neo4j:dunajska12@localhost:7474');
+var db = new neo4j.GraphDatabase('http://neo4j:dunajska12@192.168.1.76:7474');
 var app = express();
 
 app.use(express.static(__dirname + '/public'));
@@ -13,7 +13,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
-});
+}); 
 
 app.use(cors());
 
@@ -40,7 +40,7 @@ app.get('/get/uzivatelia', function (req, res) {
 });
 app.get('/get/pripomienky', function (req, res) {
     db.cypher({
-        query: 'MATCH (p:Pripomienka)<-[v:PRIPOMIENKOVAL]-(u) optional match (p:Pripomienka)<-[v2:ZAPRACOVAL]-(u2:Uzivatel) RETURN p, u, v, v2, u2 order by ID(p) DESC'
+        query: 'MATCH (p:Pripomienka)<-[v:PRIPOMIENKOVAL]-(u) optional match (p:Pripomienka)<-[v2:ZAPRACOVAL]-(u2:Uzivatel) RETURN p, u.meno as zadavatel, v.kedy as casZadania, v2.kedy as casZapracovania, count(v2.kedy) as ciZapracoval, u2.meno as zapracoval order by ID(p) DESC'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -58,7 +58,7 @@ app.post('/get/pripomienka', function (req, res) {
 });
 app.post('/put/pripomienkyPreProjekt', function (req, res) {
     db.cypher({
-		query: 'MATCH (p:Pripomienka)-[:PATRI]->(r), (p)<-[v:PRIPOMIENKOVAL]-(u:Uzivatel) where ID(r)='+req.body.pid+' optional match (p:Pripomienka)<-[v2:ZAPRACOVAL]-(u2:Uzivatel) RETURN p, u, v, v2, u2 order by v.kedy DESC'
+		query: 'MATCH (p:Pripomienka)-[:PATRI]->(r), (p)<-[v:PRIPOMIENKOVAL]-(u:Uzivatel) where ID(r)='+req.body.pid+' optional match (p:Pripomienka)<-[v2:ZAPRACOVAL]-(u2:Uzivatel) RETURN p, u.meno as zadavatel, v.kedy as casZadania, v2.kedy as casZapracovania, u2.meno as zapracoval, r.meno as nadpis order by v2.kedy DESC, toInt(p.priorita) desc'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -103,7 +103,7 @@ app.post('/put/pripomienka', function (req, res) {
 });
 app.post('/put/zmenPripomienku', function (req, res) {
     db.cypher({
-        query: 'match(p:Pripomienka) where ID(p)='+req.body.id+' set p.znenie = "'+req.body.znenie+'"'
+        query: 'match(p:Pripomienka) where ID(p)='+req.body.id+' set p.znenie = "'+req.body.znenie+'", p.priorita = '+req.body.priorita
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -131,6 +131,15 @@ app.post('/put/zmenUdajeUzivatela', function (req, res) {
 app.post('/get/uzivatel', function (req, res) {
     db.cypher({
         query: 'match (u:Uzivatel) where ID(u)='+req.body.id+' return u'
+    }, function (err, results) {
+        if (err) throw err;
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(results, null, 4));
+    });
+});
+app.post('/get/nadpis', function (req, res) {
+    db.cypher({
+        query: 'match (n) where ID(n)='+req.body.id+' return n.meno as nadpis'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });

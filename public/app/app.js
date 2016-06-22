@@ -1,1 +1,1 @@
-var app = angular.module('couch', ['ngRoute']);
+var app = angular.module('pripomienky', ['ngRoute']);

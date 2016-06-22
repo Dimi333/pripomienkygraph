@@ -35,7 +35,7 @@ app.component('pripomienka', {
 		</tr>
 		<tr>
 			<td>Priorita</td>
-			<td><priorita stupen="$ctrl.priorita"></priorita></td>
+			<td><priorita stupen="$ctrl.priorita" zapracovana="$ctrl.zapracoval"></priorita> zmeniť <nastavenie-priority stupen="$ctrl.priorita"></nastavenie-priority></td>
 		</tr>
 		<tr>
 			<td>Projekt</td>
@@ -43,7 +43,7 @@ app.component('pripomienka', {
 		</tr>
 		</table>
 		<br>
-		<button ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie);">Zmeň pripomienku</button>
+		<button ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita);">Zmeň pripomienku</button>
 			`,
 
 	controller: function($http, DataServis) {
@@ -55,10 +55,14 @@ app.component('pripomienka', {
 				_this.znenie = resp.data[0].p.properties.znenie;
 				_this.zadavatel = resp.data[0].u.properties.meno;
 				_this.kedy = resp.data[0].v.properties.kedy;
-				_this.priorita = resp.data[0].p.properties.priorita;
+				_this.priorita = parseInt(resp.data[0].p.properties.priorita);
 				_this.patri = resp.data[0].r.properties.meno;
-				_this.zapracoval = resp.data[0].u2.properties.meno;
-				_this.zapracovane = resp.data[0].v2.properties.kedy;
+
+				if(resp.data[0].u2)
+					_this.zapracoval = resp.data[0].u2.properties.meno;
+
+				if(resp.data[0].u2)
+					_this.zapracovane = resp.data[0].v2.properties.kedy;
 			});
 		}
 

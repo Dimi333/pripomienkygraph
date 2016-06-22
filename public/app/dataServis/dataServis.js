@@ -48,8 +48,8 @@ app.service('DataServis', function($rootScope, $http, $location) {
 		$location.path(kam)
 	}
 
-	_this.zmenPripomienku = function(id, znenie) {
-		$http.post('/put/zmenPripomienku', {id: id, znenie: znenie}).then(function(resp) {
+	_this.zmenPripomienku = function(id, znenie, priorita) {
+		$http.post('/put/zmenPripomienku', {id: id, znenie: znenie, priorita: priorita}).then(function(resp) {
 			alert('Pripomienka zmenená');
 		})
 	}

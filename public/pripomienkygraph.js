@@ -313,3 +313,627 @@ X(a);e=isNaN(a)?-1:a;c.$validate()});c.$validators.maxlength=function(a,b){retur
 WEEKENDRANGE:[5,6],fullDate:"EEEE, MMMM d, y",longDate:"MMMM d, y",medium:"MMM d, y h:mm:ss a",mediumDate:"MMM d, y",mediumTime:"h:mm:ss a","short":"M/d/yy h:mm a",shortDate:"M/d/yy",shortTime:"h:mm a"},NUMBER_FORMATS:{CURRENCY_SYM:"$",DECIMAL_SEP:".",GROUP_SEP:",",PATTERNS:[{gSize:3,lgSize:3,maxFrac:3,minFrac:0,minInt:1,negPre:"-",negSuf:"",posPre:"",posSuf:""},{gSize:3,lgSize:3,maxFrac:2,minFrac:2,minInt:1,negPre:"-\u00a4",negSuf:"",posPre:"\u00a4",posSuf:""}]},id:"en-us",localeID:"en_US",pluralCat:function(a,
 c){var e=a|0,f=c;void 0===f&&(f=Math.min(b(a),3));Math.pow(10,f);return 1==e&&0==f?"one":"other"}})}]),B(v.document).ready(function(){ee(v.document,yc)}))})(window);!window.angular.$$csp().noInlineStyle&&window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
+/*koniec suboru*/;/*
+ AngularJS v1.5.5
+ (c) 2010-2016 Google, Inc. http://angularjs.org
+ License: MIT
+ angular-route-min.js
+*/
+(function(C,d){'use strict';function z(r,h,g){return{restrict:"ECA",terminal:!0,priority:400,transclude:"element",link:function(a,c,b,f,y){function k(){n&&(g.cancel(n),n=null);l&&(l.$destroy(),l=null);m&&(n=g.leave(m),n.then(function(){n=null}),m=null)}function x(){var b=r.current&&r.current.locals;if(d.isDefined(b&&b.$template)){var b=a.$new(),f=r.current;m=y(b,function(b){g.enter(b,null,m||c).then(function(){!d.isDefined(t)||t&&!a.$eval(t)||h()});k()});l=f.scope=b;l.$emit("$viewContentLoaded");
+l.$eval(u)}else k()}var l,m,n,t=b.autoscroll,u=b.onload||"";a.$on("$routeChangeSuccess",x);x()}}}function A(d,h,g){return{restrict:"ECA",priority:-400,link:function(a,c){var b=g.current,f=b.locals;c.html(f.$template);var y=d(c.contents());if(b.controller){f.$scope=a;var k=h(b.controller,f);b.controllerAs&&(a[b.controllerAs]=k);c.data("$ngControllerController",k);c.children().data("$ngControllerController",k)}a[b.resolveAs||"$resolve"]=f;y(a)}}}var w=d.module("ngRoute",["ng"]).provider("$route",function(){function r(a,
+c){return d.extend(Object.create(a),c)}function h(a,d){var b=d.caseInsensitiveMatch,f={originalPath:a,regexp:a},g=f.keys=[];a=a.replace(/([().])/g,"\\$1").replace(/(\/)?:(\w+)(\*\?|[\?\*])?/g,function(a,d,b,c){a="?"===c||"*?"===c?"?":null;c="*"===c||"*?"===c?"*":null;g.push({name:b,optional:!!a});d=d||"";return""+(a?"":d)+"(?:"+(a?d:"")+(c&&"(.+?)"||"([^/]+)")+(a||"")+")"+(a||"")}).replace(/([\/$\*])/g,"\\$1");f.regexp=new RegExp("^"+a+"$",b?"i":"");return f}var g={};this.when=function(a,c){var b=
+d.copy(c);d.isUndefined(b.reloadOnSearch)&&(b.reloadOnSearch=!0);d.isUndefined(b.caseInsensitiveMatch)&&(b.caseInsensitiveMatch=this.caseInsensitiveMatch);g[a]=d.extend(b,a&&h(a,b));if(a){var f="/"==a[a.length-1]?a.substr(0,a.length-1):a+"/";g[f]=d.extend({redirectTo:a},h(f,b))}return this};this.caseInsensitiveMatch=!1;this.otherwise=function(a){"string"===typeof a&&(a={redirectTo:a});this.when(null,a);return this};this.$get=["$rootScope","$location","$routeParams","$q","$injector","$templateRequest",
+"$sce",function(a,c,b,f,h,k,x){function l(b){var e=s.current;(w=(p=n())&&e&&p.$$route===e.$$route&&d.equals(p.pathParams,e.pathParams)&&!p.reloadOnSearch&&!u)||!e&&!p||a.$broadcast("$routeChangeStart",p,e).defaultPrevented&&b&&b.preventDefault()}function m(){var v=s.current,e=p;if(w)v.params=e.params,d.copy(v.params,b),a.$broadcast("$routeUpdate",v);else if(e||v)u=!1,(s.current=e)&&e.redirectTo&&(d.isString(e.redirectTo)?c.path(t(e.redirectTo,e.params)).search(e.params).replace():c.url(e.redirectTo(e.pathParams,
+c.path(),c.search())).replace()),f.when(e).then(function(){if(e){var a=d.extend({},e.resolve),b,c;d.forEach(a,function(b,e){a[e]=d.isString(b)?h.get(b):h.invoke(b,null,null,e)});d.isDefined(b=e.template)?d.isFunction(b)&&(b=b(e.params)):d.isDefined(c=e.templateUrl)&&(d.isFunction(c)&&(c=c(e.params)),d.isDefined(c)&&(e.loadedTemplateUrl=x.valueOf(c),b=k(c)));d.isDefined(b)&&(a.$template=b);return f.all(a)}}).then(function(c){e==s.current&&(e&&(e.locals=c,d.copy(e.params,b)),a.$broadcast("$routeChangeSuccess",
+e,v))},function(b){e==s.current&&a.$broadcast("$routeChangeError",e,v,b)})}function n(){var a,b;d.forEach(g,function(f,g){var q;if(q=!b){var h=c.path();q=f.keys;var l={};if(f.regexp)if(h=f.regexp.exec(h)){for(var k=1,n=h.length;k<n;++k){var m=q[k-1],p=h[k];m&&p&&(l[m.name]=p)}q=l}else q=null;else q=null;q=a=q}q&&(b=r(f,{params:d.extend({},c.search(),a),pathParams:a}),b.$$route=f)});return b||g[null]&&r(g[null],{params:{},pathParams:{}})}function t(a,b){var c=[];d.forEach((a||"").split(":"),function(a,
+d){if(0===d)c.push(a);else{var f=a.match(/(\w+)(?:[?*])?(.*)/),g=f[1];c.push(b[g]);c.push(f[2]||"");delete b[g]}});return c.join("")}var u=!1,p,w,s={routes:g,reload:function(){u=!0;var b={defaultPrevented:!1,preventDefault:function(){this.defaultPrevented=!0;u=!1}};a.$evalAsync(function(){l(b);b.defaultPrevented||m()})},updateParams:function(a){if(this.current&&this.current.$$route)a=d.extend({},this.current.params,a),c.path(t(this.current.$$route.originalPath,a)),c.search(a);else throw B("norout");
+}};a.$on("$locationChangeStart",l);a.$on("$locationChangeSuccess",m);return s}]}),B=d.$$minErr("ngRoute");w.provider("$routeParams",function(){this.$get=function(){return{}}});w.directive("ngView",z);w.directive("ngView",A);z.$inject=["$route","$anchorScroll","$animate"];A.$inject=["$compile","$controller","$route"]})(window,window.angular);
+
+/*koniec suboru*/;var app = angular.module('pripomienky', ['ngRoute']);
+/*koniec suboru*/;app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$compileProvider', function($routeProvider, $locationProvider, $httpProvider, $compileProvider) {
+	$routeProvider
+		.when('/prihlasenie', {
+			template: '<prihlasenie></prihlasenie>'
+		})
+		.when('/projekty', {
+			template: '<projekty></projekty><br><pridaj co="projekt"></pridaj>'
+		})
+		.when('/projekt/:id', {
+			template: '<projekt pid="{{$ctrl.id}}"></projekt>',
+			controller: function($routeParams) {
+				_this = this;
+				_this.id = $routeParams.id;
+			},
+			controllerAs: '$ctrl',
+			bindToController: 'true'
+		})
+		.when('/pripomienka/:id', {
+			template: '<pripomienka id="{{$ctrl.id}}"></pripomienka>',
+			controller: function($routeParams) {
+				_this = this;
+				_this.id = $routeParams.id;
+			},
+			controllerAs: '$ctrl',
+			bindToController: 'true'
+		})
+		.when('/pripomienky', {
+			template: '<h2>Všetky pripomienky</h2><pripomienky></pripomienky>'
+		})
+		.when('/uzivatelia', {
+			template: '<uzivatelia></uzivatelia><br><pridaj co="uzivatel"></pridaj>'
+		})
+		.when('/uzivatel/:id', {
+			template: '<uzivatel idu="{{$ctrl.id}}"></uzivatel>',
+			controller: function($routeParams) {
+				_this = this;
+				_this.id = $routeParams.id;
+			},
+			controllerAs: '$ctrl',
+			bindToController: 'true'
+		})
+		.otherwise({
+			redirectTo: '/projekty'
+		});
+
+		$locationProvider.html5Mode(true).hashPrefix('*');
+
+		$compileProvider.debugInfoEnabled(false);
+}]);
+
+app.run(function($rootScope, $location, DataServis) {
+	// keep user logged in after page refresh
+	if (!DataServis.prihlaseny) {
+		$location.path('/prihlasenie');
+	}
+
+	//vráti ho na login keď nieje prihlásený
+	$rootScope.$on('$locationChangeStart', function (event, next, current) {
+		if(!DataServis.prihlaseny) { // true|false
+			$location.path('/prihlasenie');
+		}
+
+		var publicPages = ['/prihlasenie'];
+		var restrictedPage = publicPages.indexOf($location.path()) === -1;
+		if (restrictedPage && !DataServis.prihlaseny) {
+			$location.path('/prihlasenie');
+		}
+	});
+});
+
+app.filter('akNieje', function() {
+    return function(input, defaultValue) {
+        if (angular.isUndefined(input) || input === null || input === '') {
+            return defaultValue;
+        }
+
+        return input;
+    }
+});
+/*koniec suboru*/;app.service('DataServis', function($rootScope, $http, $location) {
+	var _this = this;
+
+	_this.prihlaseny = false;
+	_this.id;
+	_this.meno;
+
+	_this.query = function(co) {
+		return $http.get('/get/' + co);
+	}
+
+	_this.query2 = function(co, id) {
+		return $http.post('/get/' + co, {id: id});
+	}
+
+	_this.pridajProjekt = function(meno, zadavatelID) {
+		$http.post('/put/projekt', {meno: meno, zadavatelID: zadavatelID}).then(function(resp) {
+			$rootScope.$emit('pridanyProjekt');
+		})
+	}
+
+	_this.pridajPripomienku = function(znenie, zadavatelID, projektID, priorita) {
+		$http.post('/put/pripomienka', JSON.stringify({znenie: znenie, zadavatelID: zadavatelID, projektID: projektID, priorita: priorita})).then(function(resp) {
+			$rootScope.$emit('pridanaPripomienka');
+		})
+	}
+
+	_this.pridajUzivatela = function(meno, heslo) {
+		$http.post('/put/uzivatel', {meno: meno, heslo: heslo}).then(function(resp) {
+			$rootScope.$emit('pridanyUzivatel');
+		})
+	}
+	_this.prihlas = function(meno, heslo) {
+		$http.post('/put/prihlas', {meno: meno, heslo: heslo}).then(function(resp) {
+			if(resp.data[0].u.properties.meno) {
+				_this.id = resp.data[0].u._id;
+				_this.meno = meno;
+				_this.prihlaseny = true;
+				$location.path('/');
+			}
+		})
+	}
+	_this.pripomienkyPreProjekt = function(pid) {
+		return $http.post('/put/pripomienkyPreProjekt', {pid: pid});
+	}
+
+	_this.chod = function(kam) {
+		$location.path(kam)
+	}
+
+	_this.zmenPripomienku = function(id, znenie, priorita) {
+		$http.post('/put/zmenPripomienku', {id: id, znenie: znenie, priorita: priorita}).then(function(resp) {
+			alert('Pripomienka zmenená');
+		})
+	}
+
+	_this.dokonciPripomienku = function(id) {
+		$http.post('/put/dokonciPripomienku', {id: id, dokoncil: _this.id}).then(function(resp) {
+			$rootScope.$emit('dokoncenaPripomienka');
+		})
+	}
+
+	_this.zmenUdajeUzivatela = function(meno, heslo, mejl) {
+		$http.post('/put/zmenUdajeUzivatela', {meno: meno, heslo: heslo, mejl: mejl, id: _this.id}).then(function(resp) {
+			alert('Zmenené údaje užívateľa');
+		})
+	}
+});
+/*koniec suboru*/;app.controller('HlCtrl', ['$scope', '$http', function($scope, $http) {
+}]);/*koniec suboru*/;app.component('hlmenu', {
+	template: ` <div ng-show="$ctrl.ds.prihlaseny" class="hlmenu">
+					<button ng-click="$ctrl.chod('projekty')">Projekty</button>
+					<button ng-click="$ctrl.chod('uzivatelia')">Požívatelia</button>
+					<!--button ng-click="$ctrl.chod('pripomienky')">Pripomienky</button-->
+				<br><br>
+				</div>
+			`,
+
+	controller: function($http, $location, DataServis) {
+		var _this = this;
+		_this.ds = DataServis;
+		_this.vysledok;
+		_this.druhUdajov;
+
+		_this.chod = function(kam) {
+			$location.path(kam)
+		}
+	}
+});
+/*koniec suboru*/;app.component('nadpis', {
+	bindings: {
+		pid: '<'
+	},
+	template: `
+			<h2>{{$ctrl.nadpis}}</h2>
+			`,
+
+	controller: function($http, $location, DataServis) {
+		var _this = this;
+		_this.ds = DataServis;
+
+		_this.ds.query2('nadpis', _this.pid).then(function(resp) {
+			_this.nadpis = resp.data[0].nadpis;
+		});
+	}
+});
+/*koniec suboru*/;app.component('pridaj', {
+	bindings: {
+		co: '@',
+		pid: '@'
+	},
+	template: `
+			<div ng-switch="$ctrl.co" class="pridavaciFormular">
+				<div ng-switch-when="uzivatel">
+					<h3>Pridanie užívateľa</h3>
+					<input type="text" placeholder="Meno užívateľa" ng-model="$ctrl.menoUzivatela">
+					<input type="text" placeholder="Heslo užívateľa" ng-model="$ctrl.hesloUzivatela">
+					<button ng-click="$ctrl.ds.pridajUzivatela($ctrl.menoUzivatela, $ctrl.hesloUzivatela)">[+] Pridaj užívateľa</button>
+				</div>
+				<div ng-switch-when="pripomienka">
+					<h3>Pridanie pripomienky</h3>
+					<input type="text" placeholder="Znenie pripomienky" ng-model="$ctrl.zneniePripomienky">
+					<nastavenie-priority stupen="$ctrl.stupen"></nastavenie-priority>
+					
+					<button ng-click="$ctrl.ds.pridajPripomienku($ctrl.zneniePripomienky, $ctrl.ds.id, $ctrl.pid, $ctrl.stupen)">[+] Pridaj pripomieku</button>
+				</div>
+				<div ng-switch-when="projekt">
+					<h3>Pridanie projektu</h3>
+					<input type="text" placeholder="Meno projektu" ng-model="$ctrl.menoProjektu">
+					<button ng-click="$ctrl.ds.pridajProjekt($ctrl.menoProjektu, $ctrl.ds.id)">[+] Pridaj projekt</button>
+				</div>
+			</div>
+			`,
+
+	controller: function($http, $location, DataServis) {
+		var _this = this;
+		_this.ds = DataServis;
+
+		_this.stupen = 0;
+	}
+});
+/*koniec suboru*/;app.component('prihlasenie', {
+	template: `
+		<center>
+			<h1>Pripomienkovač</h1>
+			<form ng-submit="$ctrl.ds.prihlas($ctrl.prihlMeno, $ctrl.prihlHeslo)">
+			<input type="text" ng-model="$ctrl.prihlMeno" placeholder="Meno"><br>
+			<input type="password" ng-model="$ctrl.prihlHeslo" placeholder="Heslo"><br><br>
+			<button type="submit">Prihlás</button>
+			</form>
+		</center>
+			`,
+
+	controller: function($http, $location, DataServis) {
+		var _this = this;
+		_this.ds = DataServis;
+	}
+});
+/*koniec suboru*/;app.component('nastaveniePriority', {
+	bindings: {
+		stupen: '=?stupen'
+	},
+	template: `
+			<select ng-model="$ctrl.stupen">
+				<option value="-1">nízka</option>
+				<option value="0" selected>stredná</option>
+				<option value="1">vysoká</option>
+				<option value="2">ASAP</option>
+			</select>
+			`,
+
+	controller: function($http, $location, DataServis) {
+		var _this = this;
+		_this.stupen = 0;
+	}
+});
+/*koniec suboru*/;app.component('priorita', {
+	bindings: {
+		stupen: '<',
+		zapracovana: '<?'
+	},
+	template: `
+				<span ng-class="$ctrl.trieda">{{$ctrl.prioritaSlovom}}</span>
+			`,
+
+	controller: function($http, $location, DataServis) {
+		var _this = this;
+
+		_this.prevedStupen = function(stupen) {
+			switch(stupen) {
+				case -1:
+					_this.prioritaSlovom = 'Nízka';
+					_this.trieda = 'nizka';
+					break;
+				case 0:
+					_this.prioritaSlovom = 'Stredná';
+					_this.trieda = 'stredna';
+					break;
+				case 1:
+					_this.prioritaSlovom = 'Vysoká';
+					_this.trieda = 'vysoka';
+					break;
+				case 2:
+					_this.prioritaSlovom = 'ASAP';
+					_this.trieda = 'vysoka2';
+					break;
+				default:
+					_this.prioritaSlovom = 'Stredná';
+					_this.trieda = 'stredna';
+					break;
+			}
+
+			if(_this.zapracovana && stupen == 2) {
+				_this.trieda = 'vysoka2zapracovana';
+			}
+
+			if(_this.zapracovana && stupen == 1) {
+				_this.trieda = 'strednazapracovana';
+			}
+		}
+
+		_this.$onChanges = function (changesObj) {
+			_this.prevedStupen(changesObj.stupen.currentValue);
+		}
+	}
+});
+/*koniec suboru*/;app.component('pripomienka', {
+	bindings: {
+		id: '@'
+	},
+	template: `
+		<h2>Pripomienka</h2>
+		<table class="pripomienka">
+		<tr>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr>
+			<td>ID</td>
+			<td>{{$ctrl.id}}</td>
+		</tr>
+		<tr>
+			<td>Znenie</td>
+			<td><textarea ng-model="$ctrl.znenie"></textarea></td>
+		</tr>
+		<tr>
+			<td>Zadávateľ</td>
+			<td>{{$ctrl.zadavatel}}</td>
+		</tr>
+		<tr>
+			<td>Zapracoval</td>
+			<td>{{$ctrl.zapracoval | akNieje: '-'}}</td>
+		</tr>
+		<tr>
+			<td>Čas zapracovania</td>
+			<td>{{$ctrl.zapracovane | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</td>
+		</tr>
+		<tr>
+			<td>Čas zadania</td>
+			<td>{{$ctrl.kedy | date:'dd/MM/yyyy HH:mm'}}</td>
+		</tr>
+		<tr>
+			<td>Priorita</td>
+			<td><priorita stupen="$ctrl.priorita" zapracovana="$ctrl.zapracoval"></priorita> zmeniť <nastavenie-priority stupen="$ctrl.priorita"></nastavenie-priority></td>
+		</tr>
+		<tr>
+			<td>Projekt</td>
+			<td>{{$ctrl.patri}}</td>
+		</tr>
+		</table>
+		<br>
+		<button ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita);">Zmeň pripomienku</button>
+			`,
+
+	controller: function($http, DataServis) {
+		var _this = this;
+		_this.ds = DataServis;
+
+		_this.query = function(co, id) {
+			DataServis.query2(co, id).then(function(resp) {
+				_this.znenie = resp.data[0].p.properties.znenie;
+				_this.zadavatel = resp.data[0].u.properties.meno;
+				_this.kedy = resp.data[0].v.properties.kedy;
+				_this.priorita = parseInt(resp.data[0].p.properties.priorita);
+				_this.patri = resp.data[0].r.properties.meno;
+
+				if(resp.data[0].u2)
+					_this.zapracoval = resp.data[0].u2.properties.meno;
+
+				if(resp.data[0].u2)
+					_this.zapracovane = resp.data[0].v2.properties.kedy;
+			});
+		}
+
+		_this.query('pripomienka', _this.id);
+	}
+});
+/*koniec suboru*/;app.component('pripomienky', {
+	bindings: {
+		pid: '@'
+	},
+	template: `
+	
+				<h2 ng-show="$ctrl.vysledok[0].nadpis">{{$ctrl.vysledok[0].nadpis}}</h2>
+				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
+			`,
+
+	controller: function($http, DataServis, $rootScope) {
+		_this = this;
+		_this.ds = DataServis;
+
+		if(_this.pid) {
+			_this.pripomienkyPreProjekt = function(pid) {
+				DataServis.pripomienkyPreProjekt(_this.pid).then(function(resp) {
+					_this.vysledok = resp.data;
+					_this.druhUdajov = 'pripomienky';
+				});
+			}
+			_this.pripomienkyPreProjekt(_this.pid);
+		} else {
+			_this.query = function(co) {
+				DataServis.query(co).then(function(resp) {
+					_this.vysledok = resp.data;
+					_this.druhUdajov = co;
+				});
+			}
+
+			_this.query('pripomienky');
+		}
+
+		$rootScope.$on('pridanaPripomienka', function(e, d) {
+			if(_this.pid) {
+				_this.pripomienkyPreProjekt(_this.pid);
+			} else {
+				_this.query('pripomienky');
+			}
+		});
+
+		$rootScope.$on('dokoncenaPripomienka', function(e, d) {
+			if(_this.pid) {
+				_this.pripomienkyPreProjekt(_this.pid);
+			} else {
+				_this.query('pripomienky');
+			}
+		});
+	}
+});
+/*koniec suboru*/;app.component('projekt', {
+	bindings: {
+		pid: '@'
+	},
+	template: `
+			<pridaj co="pripomienka" pid="{{$ctrl.pid}}"></pridaj>
+			<br>
+			<pripomienky pid="{{$ctrl.pid}}"></pripomienky>
+			`,
+
+	controller: function($http, $location, DataServis) {
+		var _this = this;
+		_this.ds = DataServis;
+	}
+});
+/*koniec suboru*/;app.component('projekty', {
+	template: `
+				<h2>Projekty</h2>
+				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
+			`,
+
+	controller: function($http, DataServis, $rootScope) {
+		_this = this;
+
+		_this.query = function(co) {
+			DataServis.query(co).then(function(resp) {
+				_this.vysledok = resp.data;
+				_this.druhUdajov = co;
+			});
+		}
+
+		_this.query('projekty');
+
+		$rootScope.$on('pridanyProjekt', function(e, d) {
+			_this.query('projekty');
+		});
+	}
+});
+/*koniec suboru*/;app.component('uzivatel', {
+	bindings: {
+		idu: "@"
+	},
+	template: `
+				ID: {{$ctrl.idu}}<br>
+				Meno: <input type="text" ng-model="$ctrl.meno"><br>
+				Heslo: <input type="text" ng-model="$ctrl.heslo"><br>
+				Mejl: <input type="text" ng-model="$ctrl.mejl"><br>
+				<button ng-click="$ctrl.ds.zmenUdajeUzivatela($ctrl.meno, $ctrl.heslo, $ctrl.mejl)">Ulož zmeny</button>
+			`,
+
+	controller: function($http, DataServis, $rootScope) {
+		_this = this;
+		_this.ds = DataServis;
+
+		_this.query = function(co, id) {
+			DataServis.query2(co, id).then(function(resp) {
+				_this.vysledok = resp.data;
+				_this.meno = _this.vysledok[0].u.properties.meno;
+				_this.heslo = _this.vysledok[0].u.properties.heslo;
+				_this.mejl = _this.vysledok[0].u.properties.mejl;
+				_this.druhUdajov = co;
+			});
+		}
+
+		_this.query('uzivatel', _this.idu);
+	}
+});/*koniec suboru*/;app.component('uzivatelia', {
+	template: `
+				<h2>Užívatelia</h2>
+				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
+			`,
+
+	controller: function($http, DataServis) {
+		_this = this;
+
+		_this.query = function(co) {
+			DataServis.query(co).then(function(resp) {
+				_this.vysledok = resp.data;
+				_this.druhUdajov = co;
+			});
+		}
+
+		_this.query('uzivatelia');
+	}
+});
+/*koniec suboru*/;app.component('zobrazUdaje', {
+	bindings: {
+		udaje: '=',
+		druh: '='
+	},
+	template: `
+			<div ng-switch="$ctrl.druh">
+				<div ng-switch-when="uzivatelia">
+					<table>
+					<tr>
+						<th>Meno</th>
+						<th>Počet pripomienok</th>
+						<th>Počet projektov</th>
+					</tr>
+					<tr ng-repeat="u in $ctrl.udaje">
+						<td>
+							<button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button>
+						</td>
+						<td>
+							{{u.pocetPripomienok}}
+						</td>
+						<td>
+							{{u.pocetProjektov}}
+						</td>
+					</tr>
+					</table>
+				</div>
+
+				<div ng-switch-when="pripomienky">
+					<table>
+					<tr>
+						<th>Znenie</th>
+						<th>Priorita</th>
+						<th>Zadal</th>
+						<th>Zapracoval</th>
+						<th>Zapracované</th>
+						<th>Pridané</th>
+					</tr>
+					<tr ng-repeat="u in $ctrl.udaje" ng-class="u.casZapracovania? 'zapracovanaPripomienka': ''">
+						<td>
+							<input type="checkbox" ng-show="{{u.casZapracovania}}" checked disabled>
+							<input type="checkbox" ng-hide="{{u.casZapracovania}}" ng-click="$ctrl.ds.dokonciPripomienku(u.p._id);">
+							<button ng-click="$ctrl.ds.chod('/pripomienka/'+ u.p._id);"><span ng-hide="{{u.casZapracovania}}">{{u.p.properties.znenie}}</span><s ng-show="{{u.casZapracovania}}">{{u.p.properties.znenie}}</s></button>
+						</td>
+						<td>
+							<priorita stupen="u.p.properties.priorita" zapracovana="u.casZapracovania"></priorita>
+						</td>
+						<td>
+							<small>{{u.zadavatel}}</button></small>
+						</td>
+						<td>
+							<small ng-show="u.u2.properties.meno"><button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u2._id);">{{u.u2.properties.meno}}</button></small>
+							<small ng-hide="u.u2.properties.meno">-</small>
+						</td>
+						<td>
+							<small>{{u.casZapracovania | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</small>
+						</td>
+						<td>
+							<small>{{u.casZadania | date:'dd/MM/yyyy HH:mm'}}</small>
+						</td>
+					</tr>
+					</table>
+				</div>
+
+				<div ng-switch-when="projekty">
+					<table>
+					<tr>
+						<th>Meno</th>
+						<th>Počet pripomienok</th>
+						<th>Nesplnených</th>
+						<th>Zadávateľ projektu</th>
+					</tr>
+					<tr ng-repeat="u in $ctrl.udaje">
+						<td>
+							<button ng-click="$ctrl.ds.chod('/projekt/'+ u.n._id);">{{u.n.properties.meno}}</button>
+						</td>
+						<td>
+							{{u.pocetPripomienok}}
+						</td>
+						<td>
+							{{u.nesplnenePripomienky}}
+						</td>
+						<td>
+							<small><button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button></small>
+						</td>
+					</tr>
+					</table>
+				</div>
+			</div>
+			`,
+
+	controller: function(DataServis) {
+		var _this = this;
+		_this.ds = DataServis;
+	}
+});

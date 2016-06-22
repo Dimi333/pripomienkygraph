@@ -62,14 +62,35 @@ td button {
 select {
 	padding: 1px
 }
+.zapracovanaPripomienka, .zapracovanaPripomienka button {color: silver}
 .nizka {color: silver}
 .stredna {color: inherit}
+.strednazapracovana {color: inherit;}
 .vysoka {color: orange}
-.vysoka2 {color: red}
+.vysoka2 {color: red; animation: blinker 1s infinite}
+.vysoka2zapracovana {color: inherit}
 .pridavaciFormular {
 	background: #fbfbfb;
 	padding: 8px
 }
 .pridavaciFormular h3 {
 	margin-top: 0
+}
+
+@-moz-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
 }

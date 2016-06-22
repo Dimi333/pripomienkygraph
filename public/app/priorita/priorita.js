@@ -1,6 +1,7 @@
 app.component('priorita', {
 	bindings: {
-		stupen: '<'
+		stupen: '<',
+		zapracovana: '<?'
 	},
 	template: `
 				<span ng-class="$ctrl.trieda">{{$ctrl.prioritaSlovom}}</span>
@@ -8,7 +9,7 @@ app.component('priorita', {
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
-		
+
 		_this.prevedStupen = function(stupen) {
 			switch(stupen) {
 				case -1:
@@ -31,6 +32,14 @@ app.component('priorita', {
 					_this.prioritaSlovom = 'Stredná';
 					_this.trieda = 'stredna';
 					break;
+			}
+
+			if(_this.zapracovana && stupen == 2) {
+				_this.trieda = 'vysoka2zapracovana';
+			}
+
+			if(_this.zapracovana && stupen == 1) {
+				_this.trieda = 'strednazapracovana';
 			}
 		}
 
