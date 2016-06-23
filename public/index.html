@@ -7,16 +7,17 @@
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 			<![endif]-->
 
-			<link rel="stylesheet" type="text/css" href="css/css.css">
+			<link rel="stylesheet" type="text/css" href="/css/css.css">
 
-			<script type="text/javascript" src="pripomienkygraph.js"></script>
+			<script type="text/javascript" src="/pripomienkygraph.js"></script>
 
 			<base href="/">
 		</head>
 		<body ng-app="pripomienky" ng-controller="HlCtrl as $ctrl">
 			<div class="obsah">
+				<prihlasenie ng-if="!$ctrl.ds.prihlaseny"></prihlasenie>
 				<hlmenu></hlmenu>
 				<ng-view></ng-view>
-			</div> 
+			</div>
 		</body>
 	</html>

@@ -29,8 +29,10 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			scripts: {
-				files: ['**/*.js'],
-					tasks: ['jshint'],
+				files: ['public/angular/angular.min.js',
+				'public/angular/angular-route.min.js',
+				'public/app/**/*.js'],
+					tasks: ['concat'],
 					options: {
 					spawn: false,
 				},

@@ -49,21 +49,10 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$compilePro
 }]);
 
 app.run(function($rootScope, $location, DataServis) {
-	// keep user logged in after page refresh
-	if (!DataServis.prihlaseny) {
-		$location.path('/prihlasenie');
-	}
-
 	//vráti ho na login keď nieje prihlásený
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
-		if(!DataServis.prihlaseny) { // true|false
-			$location.path('/prihlasenie');
-		}
-
-		var publicPages = ['/prihlasenie'];
-		var restrictedPage = publicPages.indexOf($location.path()) === -1;
-		if (restrictedPage && !DataServis.prihlaseny) {
-			$location.path('/prihlasenie');
+		if (!DataServis.prihlaseny) {
+			//$location.path('/prihlasenie');
 		}
 	});
 });

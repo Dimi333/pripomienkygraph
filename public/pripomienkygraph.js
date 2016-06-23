@@ -381,21 +381,10 @@ d){if(0===d)c.push(a);else{var f=a.match(/(\w+)(?:[?*])?(.*)/),g=f[1];c.push(b[g
 }]);
 
 app.run(function($rootScope, $location, DataServis) {
-	// keep user logged in after page refresh
-	if (!DataServis.prihlaseny) {
-		$location.path('/prihlasenie');
-	}
-
 	//vráti ho na login keď nieje prihlásený
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
-		if(!DataServis.prihlaseny) { // true|false
-			$location.path('/prihlasenie');
-		}
-
-		var publicPages = ['/prihlasenie'];
-		var restrictedPage = publicPages.indexOf($location.path()) === -1;
-		if (restrictedPage && !DataServis.prihlaseny) {
-			$location.path('/prihlasenie');
+		if (!DataServis.prihlaseny) {
+			//$location.path('/prihlasenie');
 		}
 	});
 });
@@ -447,7 +436,7 @@ app.filter('akNieje', function() {
 				_this.id = resp.data[0].u._id;
 				_this.meno = meno;
 				_this.prihlaseny = true;
-				$location.path('/');
+				//$location.path('/');
 			}
 		})
 	}
@@ -477,8 +466,13 @@ app.filter('akNieje', function() {
 		})
 	}
 });
-/*koniec suboru*/;app.controller('HlCtrl', ['$scope', '$http', function($scope, $http) {
-}]);/*koniec suboru*/;app.component('hlmenu', {
+/*koniec suboru*/;app.controller('HlCtrl', ['DataServis', function(DataServis) {
+	_this = this;
+
+	_this.ds = DataServis;
+	console.log(_this.ds.prihlaseny);
+}]);
+/*koniec suboru*/;app.component('hlmenu', {
 	template: ` <div ng-show="$ctrl.ds.prihlaseny" class="hlmenu">
 					<button ng-click="$ctrl.chod('projekty')">Projekty</button>
 					<button ng-click="$ctrl.chod('uzivatelia')">Požívatelia</button>
@@ -552,7 +546,7 @@ app.filter('akNieje', function() {
 });
 /*koniec suboru*/;app.component('prihlasenie', {
 	template: `
-		<center>
+		<center id="prihlFormular">
 			<h1>Pripomienkovač</h1>
 			<form ng-submit="$ctrl.ds.prihlas($ctrl.prihlMeno, $ctrl.prihlHeslo)">
 			<input type="text" ng-model="$ctrl.prihlMeno" placeholder="Meno"><br>

@@ -36,7 +36,7 @@ app.service('DataServis', function($rootScope, $http, $location) {
 				_this.id = resp.data[0].u._id;
 				_this.meno = meno;
 				_this.prihlaseny = true;
-				$location.path('/');
+				//$location.path('/');
 			}
 		})
 	}

@@ -1,6 +1,6 @@
 app.component('prihlasenie', {
 	template: `
-		<center>
+		<center id="prihlFormular">
 			<h1>Pripomienkovač</h1>
 			<form ng-submit="$ctrl.ds.prihlas($ctrl.prihlMeno, $ctrl.prihlHeslo)">
 			<input type="text" ng-model="$ctrl.prihlMeno" placeholder="Meno"><br>

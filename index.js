@@ -13,7 +13,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
-}); 
+});
 
 app.use(cors());
 
@@ -147,8 +147,8 @@ app.post('/get/nadpis', function (req, res) {
     });
 });
 app.all('*', function(req, res) {
-  res.redirect('/');
+	res.sendFile(__dirname + '/public/index.html');
 });
 app.listen(3000, function () {
-  console.log('Beží na porte 3000');
+	console.log('Beží na porte 3000');
 });
