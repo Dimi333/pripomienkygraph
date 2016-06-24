@@ -28,7 +28,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$compilePro
 			template: '<h2>Všetky pripomienky</h2><pripomienky></pripomienky>'
 		})
 		.when('/uzivatelia', {
-			template: '<uzivatelia></uzivatelia><br><pridaj co="uzivatel"></pridaj>'
+			template: '<uzivatelia ng-show="$ctrl.ds.prihlaseny"></uzivatelia><br><pridaj co="uzivatel"></pridaj>'
 		})
 		.when('/uzivatel/:id', {
 			template: '<uzivatel idu="{{$ctrl.id}}"></uzivatel>',

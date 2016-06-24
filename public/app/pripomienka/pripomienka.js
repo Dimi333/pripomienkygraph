@@ -26,6 +26,10 @@ app.component('pripomienka', {
 			<td>{{$ctrl.zapracoval | akNieje: '-'}}</td>
 		</tr>
 		<tr>
+			<td>Trvanie</td>
+			<td><input type="text" ng-model="$ctrl.trvanie"> min</td>
+		</tr>
+		<tr>
 			<td>Čas zapracovania</td>
 			<td>{{$ctrl.zapracovane | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</td>
 		</tr>
@@ -35,7 +39,7 @@ app.component('pripomienka', {
 		</tr>
 		<tr>
 			<td>Priorita</td>
-			<td><priorita stupen="$ctrl.priorita" zapracovana="$ctrl.zapracoval"></priorita> zmeniť <nastavenie-priority stupen="$ctrl.priorita"></nastavenie-priority></td>
+			<td><priorita stupen="$ctrl.priorita" zapracovana="$ctrl.zapracoval"></priorita> <span ng-show="$ctrl.ds.prihlaseny">zmeniť <nastavenie-priority stupen="$ctrl.priorita"></nastavenie-priority></span></td>
 		</tr>
 		<tr>
 			<td>Projekt</td>
@@ -43,7 +47,7 @@ app.component('pripomienka', {
 		</tr>
 		</table>
 		<br>
-		<button ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita);">Zmeň pripomienku</button>
+		<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita, $ctrl.trvanie);">Zmeň pripomienku</button>
 			`,
 
 	controller: function($http, DataServis) {
@@ -56,6 +60,11 @@ app.component('pripomienka', {
 				_this.zadavatel = resp.data[0].u.properties.meno;
 				_this.kedy = resp.data[0].v.properties.kedy;
 				_this.priorita = parseInt(resp.data[0].p.properties.priorita);
+				if(resp.data[0].p.properties.cas) {
+					_this.trvanie = parseInt(resp.data[0].p.properties.cas);
+				} else {
+					_this.trvanie = 0;
+				}
 				_this.patri = resp.data[0].r.properties.meno;
 
 				if(resp.data[0].u2)

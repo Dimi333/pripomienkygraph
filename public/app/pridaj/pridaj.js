@@ -4,7 +4,7 @@ app.component('pridaj', {
 		pid: '@'
 	},
 	template: `
-			<div ng-switch="$ctrl.co" class="pridavaciFormular">
+			<div ng-switch="$ctrl.co" class="pridavaciFormular" ng-show="$ctrl.ds.prihlaseny == true">
 				<div ng-switch-when="uzivatel">
 					<h3>Pridanie užívateľa</h3>
 					<input type="text" placeholder="Meno užívateľa" ng-model="$ctrl.menoUzivatela">
@@ -15,7 +15,6 @@ app.component('pridaj', {
 					<h3>Pridanie pripomienky</h3>
 					<input type="text" placeholder="Znenie pripomienky" ng-model="$ctrl.zneniePripomienky">
 					<nastavenie-priority stupen="$ctrl.stupen"></nastavenie-priority>
-					
 					<button ng-click="$ctrl.ds.pridajPripomienku($ctrl.zneniePripomienky, $ctrl.ds.id, $ctrl.pid, $ctrl.stupen)">[+] Pridaj pripomieku</button>
 				</div>
 				<div ng-switch-when="projekt">

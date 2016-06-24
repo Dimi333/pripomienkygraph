@@ -1,7 +1,7 @@
 app.component('zobrazUdaje', {
 	bindings: {
-		udaje: '=',
-		druh: '='
+		udaje: '<',
+		druh: '<'
 	},
 	template: `
 			<div ng-switch="$ctrl.druh">
@@ -32,14 +32,16 @@ app.component('zobrazUdaje', {
 						<th>Znenie</th>
 						<th>Priorita</th>
 						<th>Zadal</th>
+						<th>Trvanie<br><small>(min)</small></th>
 						<th>Zapracoval</th>
 						<th>Zapracované</th>
 						<th>Pridané</th>
 					</tr>
 					<tr ng-repeat="u in $ctrl.udaje" ng-class="u.casZapracovania? 'zapracovanaPripomienka': ''">
 						<td>
-							<input type="checkbox" ng-show="{{u.casZapracovania}}" checked disabled>
-							<input type="checkbox" ng-hide="{{u.casZapracovania}}" ng-click="$ctrl.ds.dokonciPripomienku(u.p._id);">
+							<input type="checkbox" ng-if="u.casZapracovania" checked disabled>
+							<input type="checkbox" ng-if="!u.casZapracovania && $ctrl.ds.prihlaseny == false" disabled>
+							<input type="checkbox" ng-if="!u.casZapracovania && $ctrl.ds.prihlaseny == true" ng-click="$ctrl.ds.dokonciPripomienku(u.p._id);">
 							<button ng-click="$ctrl.ds.chod('/pripomienka/'+ u.p._id);"><span ng-hide="{{u.casZapracovania}}">{{u.p.properties.znenie}}</span><s ng-show="{{u.casZapracovania}}">{{u.p.properties.znenie}}</s></button>
 						</td>
 						<td>
@@ -49,8 +51,11 @@ app.component('zobrazUdaje', {
 							<small>{{u.zadavatel}}</button></small>
 						</td>
 						<td>
-							<small ng-show="u.u2.properties.meno"><button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u2._id);">{{u.u2.properties.meno}}</button></small>
-							<small ng-hide="u.u2.properties.meno">-</small>
+							{{u.p.properties.cas | akNieje: '-'}}
+						</td>
+						<td>
+							<small ng-show="u.zapracoval">{{u.zapracoval}}</small>
+							<small ng-hide="u.zapracoval">-</small>
 						</td>
 						<td>
 							<small>{{u.casZapracovania | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</small>
@@ -81,7 +86,7 @@ app.component('zobrazUdaje', {
 							{{u.nesplnenePripomienky}}
 						</td>
 						<td>
-							<small><button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button></small>
+							<small>{{u.u.properties.meno}}</small>
 						</td>
 					</tr>
 					</table>

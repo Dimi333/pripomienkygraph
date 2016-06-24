@@ -58,7 +58,7 @@ app.post('/get/pripomienka', function (req, res) {
 });
 app.post('/put/pripomienkyPreProjekt', function (req, res) {
     db.cypher({
-		query: 'MATCH (p:Pripomienka)-[:PATRI]->(r), (p)<-[v:PRIPOMIENKOVAL]-(u:Uzivatel) where ID(r)='+req.body.pid+' optional match (p:Pripomienka)<-[v2:ZAPRACOVAL]-(u2:Uzivatel) RETURN p, u.meno as zadavatel, v.kedy as casZadania, v2.kedy as casZapracovania, u2.meno as zapracoval, r.meno as nadpis order by v2.kedy DESC, toInt(p.priorita) desc'
+		query: 'MATCH (p:Pripomienka)-[:PATRI]->(r), (p)<-[v:PRIPOMIENKOVAL]-(u:Uzivatel) where ID(r)='+req.body.pid+' optional match (p:Pripomienka)<-[v2:ZAPRACOVAL]-(u2:Uzivatel) optional match (p2:Pripomienka)-[:PATRI]->(r) where ID(r)='+req.body.pid+' RETURN p, u.meno as zadavatel, v.kedy as casZadania, v2.kedy as casZapracovania, u2.meno as zapracoval, r.meno as nadpis, sum(p2.cas) as trvanie order by v2.kedy DESC, toInt(p.priorita) desc'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -67,7 +67,7 @@ app.post('/put/pripomienkyPreProjekt', function (req, res) {
 });
 app.post('/put/dokonciPripomienku', function (req, res) {
     db.cypher({
-		query: 'MATCH (p:Pripomienka),(u:Uzivatel) where ID(p)='+req.body.id+' and ID(u)='+req.body.dokoncil+' create (u)-[:ZAPRACOVAL {kedy: "'+Date.now()+'"}]->(p) RETURN p'
+		query: 'MATCH (p:Pripomienka), (u:Uzivatel) where ID(p)='+req.body.id+' and ID(u)='+req.body.dokoncil+' create (u)-[:ZAPRACOVAL {kedy: "'+Date.now()+'"}]->(p) set p.cas='+req.body.cas+' RETURN p'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -94,7 +94,7 @@ app.post('/put/projekt', function (req, res) {
 });
 app.post('/put/pripomienka', function (req, res) {
     db.cypher({
-        query: 'match(u:Uzivatel), (r:Projekt) where ID(r)='+req.body.projektID+' and ID(u)='+req.body.zadavatelID+' create (p:Pripomienka {znenie: "'+req.body.znenie+'", priorita: '+req.body.priorita+'}), (u)-[v:PRIPOMIENKOVAL {kedy: "'+Date.now()+'"}]->(p), (p)-[v2:PATRI]->(r) return u, v, r'
+        query: 'match(u:Uzivatel), (r:Projekt) where ID(r)='+req.body.projektID+' and ID(u)='+req.body.zadavatelID+' create (p:Pripomienka {znenie: "'+ req.body.znenie.replace(/['"]+/g, '')+'", priorita: '+req.body.priorita+'}), (u)-[v:PRIPOMIENKOVAL {kedy: "'+Date.now()+'"}]->(p), (p)-[v2:PATRI]->(r) return u, v, r'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -103,7 +103,7 @@ app.post('/put/pripomienka', function (req, res) {
 });
 app.post('/put/zmenPripomienku', function (req, res) {
     db.cypher({
-        query: 'match(p:Pripomienka) where ID(p)='+req.body.id+' set p.znenie = "'+req.body.znenie+'", p.priorita = '+req.body.priorita
+        query: 'match(p:Pripomienka) where ID(p)='+req.body.id+' set p.znenie = "'+req.body.znenie.replace(/['"]+/g, '')+'", p.priorita = '+req.body.priorita+', p.cas = '+req.body.trvanie
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });

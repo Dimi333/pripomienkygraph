@@ -15,7 +15,9 @@
 		</head>
 		<body ng-app="pripomienky" ng-controller="HlCtrl as $ctrl">
 			<div class="obsah">
-				<prihlasenie ng-if="!$ctrl.ds.prihlaseny"></prihlasenie>
+				<div ng-if="$ctrl.ds.prihlaseny == false">
+					<prihlasenie></prihlasenie>
+				</div>
 				<hlmenu></hlmenu>
 				<ng-view></ng-view>
 			</div>

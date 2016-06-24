@@ -36,7 +36,6 @@ app.service('DataServis', function($rootScope, $http, $location) {
 				_this.id = resp.data[0].u._id;
 				_this.meno = meno;
 				_this.prihlaseny = true;
-				//$location.path('/');
 			}
 		})
 	}
@@ -48,16 +47,24 @@ app.service('DataServis', function($rootScope, $http, $location) {
 		$location.path(kam)
 	}
 
-	_this.zmenPripomienku = function(id, znenie, priorita) {
-		$http.post('/put/zmenPripomienku', {id: id, znenie: znenie, priorita: priorita}).then(function(resp) {
+	_this.zmenPripomienku = function(id, znenie, priorita, trvanie) {
+		$http.post('/put/zmenPripomienku', {id: id, znenie: znenie, priorita: priorita, trvanie: trvanie}).then(function(resp) {
 			alert('Pripomienka zmenená');
 		})
 	}
 
 	_this.dokonciPripomienku = function(id) {
-		$http.post('/put/dokonciPripomienku', {id: id, dokoncil: _this.id}).then(function(resp) {
-			$rootScope.$emit('dokoncenaPripomienka');
-		})
+		if(_this.prihlaseny == true) {
+			var stravenyCas = prompt('Koľko minút to trvalo?', 0);
+			$http.post('/put/dokonciPripomienku', {id: id, dokoncil: _this.id, cas: stravenyCas}).then(function(resp) {
+				$rootScope.$emit('dokoncenaPripomienka');
+			})
+		} else {
+			_this.zobrazVyzvuNaPrihlasenie = true;
+			return false;
+		}
+
+
 	}
 
 	_this.zmenUdajeUzivatela = function(meno, heslo, mejl) {

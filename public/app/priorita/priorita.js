@@ -44,7 +44,9 @@ app.component('priorita', {
 		}
 
 		_this.$onChanges = function (changesObj) {
-			_this.prevedStupen(changesObj.stupen.currentValue);
+			if (changesObj.stupen) {
+				_this.prevedStupen(changesObj.stupen.currentValue);
+			}
 		}
 	}
 });

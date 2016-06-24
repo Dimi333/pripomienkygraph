@@ -3,7 +3,6 @@ app.component('pripomienky', {
 		pid: '@'
 	},
 	template: `
-	
 				<h2 ng-show="$ctrl.vysledok[0].nadpis">{{$ctrl.vysledok[0].nadpis}}</h2>
 				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
 			`,
