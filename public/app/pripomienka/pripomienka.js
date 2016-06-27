@@ -48,6 +48,9 @@ app.component('pripomienka', {
 		</table>
 		<br>
 		<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita, $ctrl.trvanie);">Zmeň pripomienku</button>
+
+		<br><br>
+		<komentare id="$ctrl.id"></komentare>
 			`,
 
 	controller: function($http, DataServis) {

@@ -463,8 +463,16 @@ app.filter('akNieje', function() {
 			_this.zobrazVyzvuNaPrihlasenie = true;
 			return false;
 		}
+	}
 
+	_this.nacitajKomentare = function(id) {
+		return $http.post('/get/nacitajKomentare', {id: id});
+	}
 
+	_this.pridajKomentar = function(id, znenie, idu) {
+		$http.post('/put/komentuj', {id: id, idu: idu, znenie: znenie}).then(function(resp) {
+			console.log(resp.data);
+		})
 	}
 
 	_this.zmenUdajeUzivatela = function(meno, heslo, mejl) {
@@ -498,6 +506,31 @@ app.filter('akNieje', function() {
 		}
 	}
 });
+/*koniec suboru*/;app.component('komentare', {
+	bindings: {
+		id: '<'
+	},
+	template: `
+				<h3>Komentáre</h3>
+				{{$ctrl.komentare}}
+				<pridaj co="komentar" pid="{{$ctrl.id}}"></pridaj>
+			`,
+
+	controller: function($http, $location, DataServis) {
+		var _this = this;
+		_this.ds = DataServis;
+
+		_this.nacitajKomentare = function(id) {
+			_this.ds.nacitajKomentare(id).then(function(resp) {
+				if(!resp.data) {
+					_this.komentare = '-';
+				} else {
+					_this.komentare = 'komentare';
+				}
+			});
+		}
+	}
+});
 /*koniec suboru*/;app.component('nadpis', {
 	bindings: {
 		pid: '<'
@@ -523,21 +556,26 @@ app.filter('akNieje', function() {
 	template: `
 			<div ng-switch="$ctrl.co" class="pridavaciFormular" ng-show="$ctrl.ds.prihlaseny == true">
 				<div ng-switch-when="uzivatel">
-					<h3>Pridanie užívateľa</h3>
+					<h4>Pridanie užívateľa</h4>
 					<input type="text" placeholder="Meno užívateľa" ng-model="$ctrl.menoUzivatela">
 					<input type="text" placeholder="Heslo užívateľa" ng-model="$ctrl.hesloUzivatela">
 					<button ng-click="$ctrl.ds.pridajUzivatela($ctrl.menoUzivatela, $ctrl.hesloUzivatela)">[+] Pridaj užívateľa</button>
 				</div>
 				<div ng-switch-when="pripomienka">
-					<h3>Pridanie pripomienky</h3>
+					<h4>Pridanie pripomienky</h4>
 					<input type="text" placeholder="Znenie pripomienky" ng-model="$ctrl.zneniePripomienky">
 					<nastavenie-priority stupen="$ctrl.stupen"></nastavenie-priority>
 					<button ng-click="$ctrl.ds.pridajPripomienku($ctrl.zneniePripomienky, $ctrl.ds.id, $ctrl.pid, $ctrl.stupen)">[+] Pridaj pripomieku</button>
 				</div>
 				<div ng-switch-when="projekt">
-					<h3>Pridanie projektu</h3>
+					<h4>Pridanie projektu</h4>
 					<input type="text" placeholder="Meno projektu" ng-model="$ctrl.menoProjektu">
 					<button ng-click="$ctrl.ds.pridajProjekt($ctrl.menoProjektu, $ctrl.ds.id)">[+] Pridaj projekt</button>
+				</div>
+				<div ng-switch-when="komentar">
+					<h4>Pridanie komentára</h4>
+					<textarea placeholder="Napíšte komentár" ng-model="$ctrl.komentar"></textarea><br>
+					<button ng-click="$ctrl.ds.pridajKomentar($ctrl.pid, $ctrl.komentar, $ctrl.ds.id)">[+] Pridaj komentár</button>
 				</div>
 			</div>
 			`,
@@ -688,6 +726,9 @@ app.filter('akNieje', function() {
 		</table>
 		<br>
 		<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita, $ctrl.trvanie);">Zmeň pripomienku</button>
+
+		<br><br>
+		<komentare id="$ctrl.id"></komentare>
 			`,
 
 	controller: function($http, DataServis) {

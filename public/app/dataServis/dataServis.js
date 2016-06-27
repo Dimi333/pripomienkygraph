@@ -63,8 +63,16 @@ app.service('DataServis', function($rootScope, $http, $location) {
 			_this.zobrazVyzvuNaPrihlasenie = true;
 			return false;
 		}
+	}
 
+	_this.nacitajKomentare = function(id) {
+		return $http.post('/get/nacitajKomentare', {id: id});
+	}
 
+	_this.pridajKomentar = function(id, znenie, idu) {
+		$http.post('/put/komentuj', {id: id, idu: idu, znenie: znenie}).then(function(resp) {
+			console.log(resp.data);
+		})
 	}
 
 	_this.zmenUdajeUzivatela = function(meno, heslo, mejl) {

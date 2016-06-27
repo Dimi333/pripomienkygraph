@@ -74,6 +74,24 @@ app.post('/put/dokonciPripomienku', function (req, res) {
         res.end(JSON.stringify(results, null, 4));
     });
 });
+app.post('/get/nacitajKomentare', function (req, res) {
+    db.cypher({
+        query: 'MATCH (p:Projekt)<-[v:KOMENTAR_KU]-(k:Komentar)<-[v2:KOMENTOVAL]-(u) RETURN p, v, k, v2, u order by ID(p) DESC'
+    }, function (err, results) {
+        if (err) throw err;
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(results, null, 4));
+    });
+});
+app.post('/put/komentuj', function (req, res) {
+	db.cypher({
+		query: 'match (p:Projekt) where id(p)='+req.body.id+' optional match(u:Uzivatel) where  id(u)='+req.body.idu+' create (k:Komentar {znenie: "' + req.body.znenie + '"}), (u)-[v:KOMENTOVAL {kedy: '+Date.now()+'}]->(k), (k)-[v2:KOMENTAR_KU]->(p) return p, k, u, v'
+    }, function (err, results) {
+        if (err) throw err;
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(results, null, 4));
+    });
+});
 app.get('/get/projekty', function (req, res) {
     db.cypher({
         query: 'MATCH (n:Projekt)<-[r:VYTVORIL]–(u:Uzivatel) OPTIONAL MATCH (:Pripomienka)-[r2:PATRI]->(n:Projekt) optional MATCH (p:Pripomienka) where (p)-[:PATRI]->(n) and not ((:Uzivatel)-[:ZAPRACOVAL]->(p:Pripomienka)) RETURN count(distinct p) as `nesplnenePripomienky`, n, count(distinct r2) as `pocetPripomienok`, u'
