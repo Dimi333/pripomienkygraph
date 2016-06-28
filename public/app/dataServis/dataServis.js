@@ -4,6 +4,7 @@ app.service('DataServis', function($rootScope, $http, $location) {
 	_this.prihlaseny = false;
 	_this.id;
 	_this.meno;
+	_this.mejl;
 
 	_this.query = function(co) {
 		return $http.get('/get/' + co);
@@ -35,6 +36,7 @@ app.service('DataServis', function($rootScope, $http, $location) {
 			if(resp.data[0].u.properties.meno) {
 				_this.id = resp.data[0].u._id;
 				_this.meno = meno;
+				_this.mejl = mejl;
 				_this.prihlaseny = true;
 			}
 		})
@@ -71,7 +73,13 @@ app.service('DataServis', function($rootScope, $http, $location) {
 
 	_this.pridajKomentar = function(id, znenie, idu) {
 		$http.post('/put/komentuj', {id: id, idu: idu, znenie: znenie}).then(function(resp) {
-			console.log(resp.data);
+			$rootScope.$emit('pridanyKomentar');
+		})
+	}
+
+	_this.posliMejl = function(komu, predmet, obsah) {
+		$http.post('/put/posliMejl', {komu: komu, predmet: predmet, obsah: obsah}).then(function(resp) {
+			//sprava poslana
 		})
 	}
 

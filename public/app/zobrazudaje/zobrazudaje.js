@@ -51,11 +51,12 @@ app.component('zobrazUdaje', {
 							<small>{{u.zadavatel}}</button></small>
 						</td>
 						<td>
-							{{u.p.properties.cas | akNieje: '-'}}
+							<small ng-if="u.p.properties.cas">{{u.p.properties.cas}}</small>
+							<small ng-if="!u.p.properties.cas">-</small>
 						</td>
 						<td>
-							<small ng-show="u.zapracoval">{{u.zapracoval}}</small>
-							<small ng-hide="u.zapracoval">-</small>
+							<small ng-if="u.zapracoval > 0">{{u.zapracoval}}</small>
+							<small ng-if="u.zapracoval == 0 || !u.zapracoval">-</small>
 						</td>
 						<td>
 							<small>{{u.casZapracovania | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</small>
@@ -87,6 +88,27 @@ app.component('zobrazUdaje', {
 						</td>
 						<td>
 							<small>{{u.u.properties.meno}}</small>
+						</td>
+					</tr>
+					</table>
+				</div>
+
+				<div ng-switch-when="komentare">
+					<table>
+					<tr>
+						<th>Znenie</th>
+						<th>Kedy</th>
+						<th>Komentoval</th>
+					</tr>
+					<tr ng-repeat="u in $ctrl.udaje">
+						<td>
+							&mdash; {{u.znenie}}
+						</td>
+						<td>
+							{{u.kedy | date:'dd/MM/yyyy HH:mm'}}
+						</td>
+						<td>
+							{{u.komentator}}
 						</td>
 					</tr>
 					</table>

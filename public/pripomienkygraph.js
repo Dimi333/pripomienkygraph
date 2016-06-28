@@ -404,6 +404,7 @@ app.filter('akNieje', function() {
 	_this.prihlaseny = false;
 	_this.id;
 	_this.meno;
+	_this.mejl;
 
 	_this.query = function(co) {
 		return $http.get('/get/' + co);
@@ -435,6 +436,7 @@ app.filter('akNieje', function() {
 			if(resp.data[0].u.properties.meno) {
 				_this.id = resp.data[0].u._id;
 				_this.meno = meno;
+				_this.mejl = mejl;
 				_this.prihlaseny = true;
 			}
 		})
@@ -471,7 +473,13 @@ app.filter('akNieje', function() {
 
 	_this.pridajKomentar = function(id, znenie, idu) {
 		$http.post('/put/komentuj', {id: id, idu: idu, znenie: znenie}).then(function(resp) {
-			console.log(resp.data);
+			$rootScope.$emit('pridanyKomentar');
+		})
+	}
+
+	_this.posliMejl = function(komu, predmet, obsah) {
+		$http.post('/put/posliMejl', {komu: komu, predmet: predmet, obsah: obsah}).then(function(resp) {
+			//sprava poslana
 		})
 	}
 
@@ -512,11 +520,11 @@ app.filter('akNieje', function() {
 	},
 	template: `
 				<h3>Komentáre</h3>
-				{{$ctrl.komentare}}
+				<zobraz-udaje udaje="$ctrl.komentare" druh="'komentare'"></zobraz-udaje><br>
 				<pridaj co="komentar" pid="{{$ctrl.id}}"></pridaj>
 			`,
 
-	controller: function($http, $location, DataServis) {
+	controller: function($rootScope, $http, $location, DataServis) {
 		var _this = this;
 		_this.ds = DataServis;
 
@@ -525,10 +533,16 @@ app.filter('akNieje', function() {
 				if(!resp.data) {
 					_this.komentare = '-';
 				} else {
-					_this.komentare = 'komentare';
+					_this.komentare = resp.data;
 				}
 			});
 		}
+
+		$rootScope.$on('pridanyKomentar', function(e, d) {
+			_this.nacitajKomentare(_this.id);
+		});
+
+		_this.nacitajKomentare(_this.id);
 	}
 });
 /*koniec suboru*/;app.component('nadpis', {
@@ -885,7 +899,7 @@ app.filter('akNieje', function() {
 				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
 			`,
 
-	controller: function($http, DataServis) {
+	controller: function($rootScope, $http, DataServis) {
 		_this = this;
 
 		_this.query = function(co) {
@@ -894,6 +908,10 @@ app.filter('akNieje', function() {
 				_this.druhUdajov = co;
 			});
 		}
+
+		$rootScope.$on('pridanyProjekt', function(e, d) {
+			_this.query('uzivatelia');
+		});
 
 		_this.query('uzivatelia');
 	}
@@ -951,11 +969,12 @@ app.filter('akNieje', function() {
 							<small>{{u.zadavatel}}</button></small>
 						</td>
 						<td>
-							{{u.p.properties.cas | akNieje: '-'}}
+							<small ng-if="u.p.properties.cas">{{u.p.properties.cas}}</small>
+							<small ng-if="!u.p.properties.cas">-</small>
 						</td>
 						<td>
-							<small ng-show="u.zapracoval">{{u.zapracoval}}</small>
-							<small ng-hide="u.zapracoval">-</small>
+							<small ng-if="u.zapracoval > 0">{{u.zapracoval}}</small>
+							<small ng-if="u.zapracoval == 0 || !u.zapracoval">-</small>
 						</td>
 						<td>
 							<small>{{u.casZapracovania | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</small>
@@ -987,6 +1006,27 @@ app.filter('akNieje', function() {
 						</td>
 						<td>
 							<small>{{u.u.properties.meno}}</small>
+						</td>
+					</tr>
+					</table>
+				</div>
+
+				<div ng-switch-when="komentare">
+					<table>
+					<tr>
+						<th>Znenie</th>
+						<th>Kedy</th>
+						<th>Komentoval</th>
+					</tr>
+					<tr ng-repeat="u in $ctrl.udaje">
+						<td>
+							&mdash; {{u.znenie}}
+						</td>
+						<td>
+							{{u.kedy | date:'dd/MM/yyyy HH:mm'}}
+						</td>
+						<td>
+							{{u.komentator}}
 						</td>
 					</tr>
 					</table>

@@ -4,7 +4,7 @@ app.component('uzivatelia', {
 				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
 			`,
 
-	controller: function($http, DataServis) {
+	controller: function($rootScope, $http, DataServis) {
 		_this = this;
 
 		_this.query = function(co) {
@@ -13,6 +13,10 @@ app.component('uzivatelia', {
 				_this.druhUdajov = co;
 			});
 		}
+
+		$rootScope.$on('pridanyProjekt', function(e, d) {
+			_this.query('uzivatelia');
+		});
 
 		_this.query('uzivatelia');
 	}

@@ -4,11 +4,11 @@ app.component('komentare', {
 	},
 	template: `
 				<h3>Komentáre</h3>
-				{{$ctrl.komentare}}
+				<zobraz-udaje udaje="$ctrl.komentare" druh="'komentare'"></zobraz-udaje><br>
 				<pridaj co="komentar" pid="{{$ctrl.id}}"></pridaj>
 			`,
 
-	controller: function($http, $location, DataServis) {
+	controller: function($rootScope, $http, $location, DataServis) {
 		var _this = this;
 		_this.ds = DataServis;
 
@@ -17,9 +17,15 @@ app.component('komentare', {
 				if(!resp.data) {
 					_this.komentare = '-';
 				} else {
-					_this.komentare = 'komentare';
+					_this.komentare = resp.data;
 				}
 			});
 		}
+
+		$rootScope.$on('pridanyKomentar', function(e, d) {
+			_this.nacitajKomentare(_this.id);
+		});
+
+		_this.nacitajKomentare(_this.id);
 	}
 });

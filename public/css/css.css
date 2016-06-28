@@ -1,5 +1,6 @@
 * {
 	font-family: sans-serif;
+	box-sizing: border-box;
 }
 body {
 	margin: 0;
@@ -9,10 +10,11 @@ table {
 	border-spacing: 0;
 }
 table.pripomienka textarea {
-	width: 99%
+	width: 100%
 }
 th {
 	text-align: left;
+	font-size: 0.8em
 }
 tr:nth-child(even) td {
 	background: #f9f9f9
@@ -75,6 +77,9 @@ select {
 }
 .pridavaciFormular h4 {
 	margin-top: 0
+}
+.pridavaciFormular textarea {
+	width: 100%;
 }
 #prihlFormular {
 	position: fixed;

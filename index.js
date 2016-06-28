@@ -1,8 +1,13 @@
+var nastavenia = require('./nastavenia.js');
+var nastavenia = new nastavenia;
+
 var cors = require('cors');
 var express = require('express');
 var neo4j = require('neo4j');
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 var bodyParser = require("body-parser");
-var db = new neo4j.GraphDatabase('http://neo4j:dunajska12@192.168.1.76:7474');
+var db = new neo4j.GraphDatabase(nastavenia.graphdb);
 var app = express();
 
 app.use(express.static(__dirname + '/public'));
@@ -76,7 +81,7 @@ app.post('/put/dokonciPripomienku', function (req, res) {
 });
 app.post('/get/nacitajKomentare', function (req, res) {
     db.cypher({
-        query: 'MATCH (p:Projekt)<-[v:KOMENTAR_KU]-(k:Komentar)<-[v2:KOMENTOVAL]-(u) RETURN p, v, k, v2, u order by ID(p) DESC'
+        query: 'MATCH (p:Pripomienka)<-[v:KOMENTAR_KU]-(k:Komentar)<-[v2:KOMENTOVAL]-(u) where id(p)='+req.body.id+' RETURN k.znenie as znenie, v2.kedy as kedy, u.meno as komentator order by kedy DESC'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -85,11 +90,12 @@ app.post('/get/nacitajKomentare', function (req, res) {
 });
 app.post('/put/komentuj', function (req, res) {
 	db.cypher({
-		query: 'match (p:Projekt) where id(p)='+req.body.id+' optional match(u:Uzivatel) where  id(u)='+req.body.idu+' create (k:Komentar {znenie: "' + req.body.znenie + '"}), (u)-[v:KOMENTOVAL {kedy: '+Date.now()+'}]->(k), (k)-[v2:KOMENTAR_KU]->(p) return p, k, u, v'
+		query: 'match (p:Pripomienka) where id(p)='+req.body.id+' optional match(u:Uzivatel) where  id(u)='+req.body.idu+' create (k:Komentar {znenie: "' + req.body.znenie + '"}), (u)-[v:KOMENTOVAL {kedy: '+Date.now()+'}]->(k), (k)-[v2:KOMENTAR_KU]->(p) return p, k, u, v'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(results, null, 4));
+		posliMejl('oresansky@elet.sk', 'Komenár na tebou zapracovanú pripomienku', req.body.znenie);
     });
 });
 app.get('/get/projekty', function (req, res) {
@@ -170,3 +176,40 @@ app.all('*', function(req, res) {
 app.listen(3000, function () {
 	console.log('Beží na porte 3000');
 });
+
+
+var posliMejl = function(komu, predmet, obsah) {
+	// create reusable transporter object using the default SMTP transport
+	//var transporter = nodemailer.createTransport(nastavenia.mejl_meno);
+	var transporter = nodemailer.createTransport(smtpTransport({
+		host: nastavenia.mejl_host,
+		port: nastavenia.mejl_port,
+		auth: {
+			user: nastavenia.mejl_user,
+			pass: nastavenia.mejl_pass
+		}
+	}));
+
+	// verify connection configuration
+	transporter.verify(function(error, success) {
+	   if (error) {
+			console.log(error);
+	   } else {
+			console.log('Server is ready to take our messages');
+	   }
+	});
+
+	// setup e-mail data with unicode symbols
+	var mailOptions = {
+		from: '"Pripomienkovač 👥" <skusamelet@elet.sk>', // sender address
+		to: komu, // list of receivers
+		subject: predmet, // Subject line
+		text: obsah, // plaintext body
+		html: obsah // html body
+	};
+
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, function(error, info){
+		console.log(error);
+	});
+}
