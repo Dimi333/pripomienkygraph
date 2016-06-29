@@ -36,7 +36,7 @@ app.service('DataServis', function($rootScope, $http, $location) {
 			if(resp.data[0].u.properties.meno) {
 				_this.id = resp.data[0].u._id;
 				_this.meno = meno;
-				_this.mejl = mejl;
+				_this.mejl = resp.data[0].u.properties.mejl;
 				_this.prihlaseny = true;
 			}
 		})

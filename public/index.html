@@ -1,25 +1,25 @@
 <!doctype html>
-	<html lang="sk">
-		<head>
-			<meta charset="utf-8" />
-			<title>Pripomienky neo4j</title>
-			<!--[if IE]>
-			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-			<![endif]-->
+<html lang="sk">
+    <head>
+        <meta charset="utf-8" />
+        <title>Pripomienkovač</title>
+        <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-			<link rel="stylesheet" type="text/css" href="/css/css.css">
+        <link rel="stylesheet" type="text/css" href="/css/css.css">
+        
+        <script type="text/javascript" src="/pripomienkygraph.js"></script>
 
-			<script type="text/javascript" src="/pripomienkygraph.js"></script>
-
-			<base href="/">
-		</head>
-		<body ng-app="pripomienky" ng-controller="HlCtrl as $ctrl">
-			<div class="obsah">
-				<div ng-if="$ctrl.ds.prihlaseny == false">
-					<prihlasenie></prihlasenie>
-				</div>
-				<hlmenu></hlmenu>
-				<ng-view></ng-view>
-			</div>
-		</body>
-	</html>
+        <base href="/">
+    </head>
+    <body ng-app="pripomienky" ng-controller="HlCtrl as $ctrl">
+        <div class="obsah">
+            <div ng-if="$ctrl.ds.prihlaseny == false">
+                   <prihlasenie></prihlasenie>
+            </div>
+            <hlmenu></hlmenu>
+            <ng-view></ng-view>
+        </div>
+    </body>
+</html>

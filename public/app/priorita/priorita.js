@@ -3,9 +3,7 @@ app.component('priorita', {
 		stupen: '<',
 		zapracovana: '<?'
 	},
-	template: `
-				<span ng-class="$ctrl.trieda">{{$ctrl.prioritaSlovom}}</span>
-			`,
+	templateUrl: 'app/priorita/priorita.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;

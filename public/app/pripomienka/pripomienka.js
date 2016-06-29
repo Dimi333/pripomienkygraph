@@ -2,56 +2,7 @@ app.component('pripomienka', {
 	bindings: {
 		id: '@'
 	},
-	template: `
-		<h2>Pripomienka</h2>
-		<table class="pripomienka">
-		<tr>
-			<th></th>
-			<th></th>
-		</tr>
-		<tr>
-			<td>ID</td>
-			<td>{{$ctrl.id}}</td>
-		</tr>
-		<tr>
-			<td>Znenie</td>
-			<td><textarea ng-model="$ctrl.znenie"></textarea></td>
-		</tr>
-		<tr>
-			<td>Zadávateľ</td>
-			<td>{{$ctrl.zadavatel}}</td>
-		</tr>
-		<tr>
-			<td>Zapracoval</td>
-			<td>{{$ctrl.zapracoval | akNieje: '-'}}</td>
-		</tr>
-		<tr>
-			<td>Trvanie</td>
-			<td><input type="text" ng-model="$ctrl.trvanie"> min</td>
-		</tr>
-		<tr>
-			<td>Čas zapracovania</td>
-			<td>{{$ctrl.zapracovane | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</td>
-		</tr>
-		<tr>
-			<td>Čas zadania</td>
-			<td>{{$ctrl.kedy | date:'dd/MM/yyyy HH:mm'}}</td>
-		</tr>
-		<tr>
-			<td>Priorita</td>
-			<td><priorita stupen="$ctrl.priorita" zapracovana="$ctrl.zapracoval"></priorita> <span ng-show="$ctrl.ds.prihlaseny">zmeniť <nastavenie-priority stupen="$ctrl.priorita"></nastavenie-priority></span></td>
-		</tr>
-		<tr>
-			<td>Projekt</td>
-			<td>{{$ctrl.patri}}</td>
-		</tr>
-		</table>
-		<br>
-		<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita, $ctrl.trvanie);">Zmeň pripomienku</button>
-
-		<br><br>
-		<komentare id="$ctrl.id"></komentare>
-			`,
+	templateUrl: 'app/pripomienka/pripomienka.html',
 
 	controller: function($http, DataServis) {
 		var _this = this;

@@ -2,11 +2,7 @@ app.component('komentare', {
 	bindings: {
 		id: '<'
 	},
-	template: `
-				<h3>Komentáre</h3>
-				<zobraz-udaje udaje="$ctrl.komentare" druh="'komentare'"></zobraz-udaje><br>
-				<pridaj co="komentar" pid="{{$ctrl.id}}"></pridaj>
-			`,
+	templateUrl: 'app/komentare/komentare.html',
 
 	controller: function($rootScope, $http, $location, DataServis) {
 		var _this = this;

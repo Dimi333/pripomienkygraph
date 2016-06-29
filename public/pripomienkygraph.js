@@ -436,7 +436,7 @@ app.filter('akNieje', function() {
 			if(resp.data[0].u.properties.meno) {
 				_this.id = resp.data[0].u._id;
 				_this.meno = meno;
-				_this.mejl = mejl;
+				_this.mejl = resp.data[0].u.properties.mejl;
 				_this.prihlaseny = true;
 			}
 		})
@@ -495,13 +495,7 @@ app.filter('akNieje', function() {
 	_this.ds = DataServis;
 }]);
 /*koniec suboru*/;app.component('hlmenu', {
-	template: ` <div class="hlmenu">
-					<button ng-click="$ctrl.chod('projekty')">Projekty</button>
-					<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.chod('uzivatelia')">Požívatelia</button>
-					<!--button ng-click="$ctrl.chod('pripomienky')">Pripomienky</button-->
-				<br><br>
-				</div>
-			`,
+	templateUrl: 'app/hlmenu/hlmenu.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
@@ -510,19 +504,14 @@ app.filter('akNieje', function() {
 		_this.druhUdajov;
 
 		_this.chod = function(kam) {
-			$location.path(kam)
-		}
+			$location.path(kam);
+		};
 	}
-});
-/*koniec suboru*/;app.component('komentare', {
+});/*koniec suboru*/;app.component('komentare', {
 	bindings: {
 		id: '<'
 	},
-	template: `
-				<h3>Komentáre</h3>
-				<zobraz-udaje udaje="$ctrl.komentare" druh="'komentare'"></zobraz-udaje><br>
-				<pridaj co="komentar" pid="{{$ctrl.id}}"></pridaj>
-			`,
+	templateUrl: 'app/komentare/komentare.html',
 
 	controller: function($rootScope, $http, $location, DataServis) {
 		var _this = this;
@@ -549,9 +538,7 @@ app.filter('akNieje', function() {
 	bindings: {
 		pid: '<'
 	},
-	template: `
-			<h2>{{$ctrl.nadpis}}</h2>
-			`,
+	templateUrl: 'app/nadpis/nadpis.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
@@ -567,32 +554,7 @@ app.filter('akNieje', function() {
 		co: '@',
 		pid: '@'
 	},
-	template: `
-			<div ng-switch="$ctrl.co" class="pridavaciFormular" ng-show="$ctrl.ds.prihlaseny == true">
-				<div ng-switch-when="uzivatel">
-					<h4>Pridanie užívateľa</h4>
-					<input type="text" placeholder="Meno užívateľa" ng-model="$ctrl.menoUzivatela">
-					<input type="text" placeholder="Heslo užívateľa" ng-model="$ctrl.hesloUzivatela">
-					<button ng-click="$ctrl.ds.pridajUzivatela($ctrl.menoUzivatela, $ctrl.hesloUzivatela)">[+] Pridaj užívateľa</button>
-				</div>
-				<div ng-switch-when="pripomienka">
-					<h4>Pridanie pripomienky</h4>
-					<input type="text" placeholder="Znenie pripomienky" ng-model="$ctrl.zneniePripomienky">
-					<nastavenie-priority stupen="$ctrl.stupen"></nastavenie-priority>
-					<button ng-click="$ctrl.ds.pridajPripomienku($ctrl.zneniePripomienky, $ctrl.ds.id, $ctrl.pid, $ctrl.stupen)">[+] Pridaj pripomieku</button>
-				</div>
-				<div ng-switch-when="projekt">
-					<h4>Pridanie projektu</h4>
-					<input type="text" placeholder="Meno projektu" ng-model="$ctrl.menoProjektu">
-					<button ng-click="$ctrl.ds.pridajProjekt($ctrl.menoProjektu, $ctrl.ds.id)">[+] Pridaj projekt</button>
-				</div>
-				<div ng-switch-when="komentar">
-					<h4>Pridanie komentára</h4>
-					<textarea placeholder="Napíšte komentár" ng-model="$ctrl.komentar"></textarea><br>
-					<button ng-click="$ctrl.ds.pridajKomentar($ctrl.pid, $ctrl.komentar, $ctrl.ds.id)">[+] Pridaj komentár</button>
-				</div>
-			</div>
-			`,
+	templateUrl: 'app/pridaj/pridaj.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
@@ -602,18 +564,7 @@ app.filter('akNieje', function() {
 	}
 });
 /*koniec suboru*/;app.component('prihlasenie', {
-	template: `
-		<center id="prihlFormular">
-			<div>
-				<p>Ak chcete niečo vykonať, musíte sa prihlásiť</p>
-				<form ng-submit="$ctrl.ds.prihlas($ctrl.prihlMeno, $ctrl.prihlHeslo)">
-				<input type="text" ng-model="$ctrl.prihlMeno" placeholder="Meno"><br>
-				<input type="password" ng-model="$ctrl.prihlHeslo" placeholder="Heslo"><br><br>
-				<button type="submit">Prihlás</button>
-				</form>
-			</div>
-		</center>
-			`,
+	templateUrl: 'app/prihlasenie/prihlasenie.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
@@ -624,14 +575,7 @@ app.filter('akNieje', function() {
 	bindings: {
 		stupen: '=?stupen'
 	},
-	template: `
-			<select ng-model="$ctrl.stupen">
-				<option value="-1">nízka</option>
-				<option value="0" selected>stredná</option>
-				<option value="1">vysoká</option>
-				<option value="2">ASAP</option>
-			</select>
-			`,
+	templateUrl: 'app/priorita/nastaveniePriority.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
@@ -643,9 +587,7 @@ app.filter('akNieje', function() {
 		stupen: '<',
 		zapracovana: '<?'
 	},
-	template: `
-				<span ng-class="$ctrl.trieda">{{$ctrl.prioritaSlovom}}</span>
-			`,
+	templateUrl: 'app/priorita/priorita.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
@@ -694,56 +636,7 @@ app.filter('akNieje', function() {
 	bindings: {
 		id: '@'
 	},
-	template: `
-		<h2>Pripomienka</h2>
-		<table class="pripomienka">
-		<tr>
-			<th></th>
-			<th></th>
-		</tr>
-		<tr>
-			<td>ID</td>
-			<td>{{$ctrl.id}}</td>
-		</tr>
-		<tr>
-			<td>Znenie</td>
-			<td><textarea ng-model="$ctrl.znenie"></textarea></td>
-		</tr>
-		<tr>
-			<td>Zadávateľ</td>
-			<td>{{$ctrl.zadavatel}}</td>
-		</tr>
-		<tr>
-			<td>Zapracoval</td>
-			<td>{{$ctrl.zapracoval | akNieje: '-'}}</td>
-		</tr>
-		<tr>
-			<td>Trvanie</td>
-			<td><input type="text" ng-model="$ctrl.trvanie"> min</td>
-		</tr>
-		<tr>
-			<td>Čas zapracovania</td>
-			<td>{{$ctrl.zapracovane | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</td>
-		</tr>
-		<tr>
-			<td>Čas zadania</td>
-			<td>{{$ctrl.kedy | date:'dd/MM/yyyy HH:mm'}}</td>
-		</tr>
-		<tr>
-			<td>Priorita</td>
-			<td><priorita stupen="$ctrl.priorita" zapracovana="$ctrl.zapracoval"></priorita> <span ng-show="$ctrl.ds.prihlaseny">zmeniť <nastavenie-priority stupen="$ctrl.priorita"></nastavenie-priority></span></td>
-		</tr>
-		<tr>
-			<td>Projekt</td>
-			<td>{{$ctrl.patri}}</td>
-		</tr>
-		</table>
-		<br>
-		<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita, $ctrl.trvanie);">Zmeň pripomienku</button>
-
-		<br><br>
-		<komentare id="$ctrl.id"></komentare>
-			`,
+	templateUrl: 'app/pripomienka/pripomienka.html',
 
 	controller: function($http, DataServis) {
 		var _this = this;
@@ -777,10 +670,7 @@ app.filter('akNieje', function() {
 	bindings: {
 		pid: '@'
 	},
-	template: `
-				<h2 ng-show="$ctrl.vysledok[0].nadpis">{{$ctrl.vysledok[0].nadpis}}</h2>
-				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
-			`,
+	templateUrl: 'app/pripomienky/pripomienky.html',
 
 	controller: function($http, DataServis, $rootScope) {
 		_this = this;
@@ -826,11 +716,7 @@ app.filter('akNieje', function() {
 	bindings: {
 		pid: '@'
 	},
-	template: `
-			<pridaj co="pripomienka" pid="{{$ctrl.pid}}"></pridaj>
-			<br>
-			<pripomienky pid="{{$ctrl.pid}}"></pripomienky>
-			`,
+	templateUrl: 'app/projekt/projekt.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
@@ -838,12 +724,9 @@ app.filter('akNieje', function() {
 	}
 });
 /*koniec suboru*/;app.component('projekty', {
-	template: `
-				<h2>Projekty</h2>
-				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
-			`,
+	templateUrl: 'app/projekty/projekty.html',
 
-	controller: function($http, DataServis, $rootScope) {
+	controller: function(DataServis, $rootScope) {
 		_this = this;
 
 		_this.query = function(co) {
@@ -851,7 +734,7 @@ app.filter('akNieje', function() {
 				_this.vysledok = resp.data;
 				_this.druhUdajov = co;
 			});
-		}
+		};
 
 		_this.query('projekty');
 
@@ -864,13 +747,7 @@ app.filter('akNieje', function() {
 	bindings: {
 		idu: "@"
 	},
-	template: `
-				ID: {{$ctrl.idu}}<br>
-				Meno: <input type="text" ng-model="$ctrl.meno"><br>
-				Heslo: <input type="text" ng-model="$ctrl.heslo"><br>
-				Mejl: <input type="text" ng-model="$ctrl.mejl"><br>
-				<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenUdajeUzivatela($ctrl.meno, $ctrl.heslo, $ctrl.mejl)">Ulož zmeny</button>
-			`,
+	templateUrl: 'app/uzivatel/uzivatel.html',
 
 	controller: function($http, DataServis, $rootScope) {
 		_this = this;
@@ -894,10 +771,7 @@ app.filter('akNieje', function() {
 	}
 });
 /*koniec suboru*/;app.component('uzivatelia', {
-	template: `
-				<h2>Užívatelia</h2>
-				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
-			`,
+	templateUrl: 'app/uzivatelia/uzivatelia.html',
 
 	controller: function($rootScope, $http, DataServis) {
 		_this = this;
@@ -921,118 +795,7 @@ app.filter('akNieje', function() {
 		udaje: '<',
 		druh: '<'
 	},
-	template: `
-			<div ng-switch="$ctrl.druh">
-				<div ng-switch-when="uzivatelia">
-					<table>
-					<tr>
-						<th>Meno</th>
-						<th>Počet pripomienok</th>
-						<th>Počet projektov</th>
-					</tr>
-					<tr ng-repeat="u in $ctrl.udaje">
-						<td>
-							<button ng-click="$ctrl.ds.chod('/uzivatel/' + u.u._id);">{{u.u.properties.meno}}</button>
-						</td>
-						<td>
-							{{u.pocetPripomienok}}
-						</td>
-						<td>
-							{{u.pocetProjektov}}
-						</td>
-					</tr>
-					</table>
-				</div>
-
-				<div ng-switch-when="pripomienky">
-					<table>
-					<tr>
-						<th>Znenie</th>
-						<th>Priorita</th>
-						<th>Zadal</th>
-						<th>Trvanie<br><small>(min)</small></th>
-						<th>Zapracoval</th>
-						<th>Zapracované</th>
-						<th>Pridané</th>
-					</tr>
-					<tr ng-repeat="u in $ctrl.udaje" ng-class="u.casZapracovania? 'zapracovanaPripomienka': ''">
-						<td>
-							<input type="checkbox" ng-if="u.casZapracovania" checked disabled>
-							<input type="checkbox" ng-if="!u.casZapracovania && $ctrl.ds.prihlaseny == false" disabled>
-							<input type="checkbox" ng-if="!u.casZapracovania && $ctrl.ds.prihlaseny == true" ng-click="$ctrl.ds.dokonciPripomienku(u.p._id);">
-							<button ng-click="$ctrl.ds.chod('/pripomienka/'+ u.p._id);"><span ng-hide="{{u.casZapracovania}}">{{u.p.properties.znenie}}</span><s ng-show="{{u.casZapracovania}}">{{u.p.properties.znenie}}</s></button>
-						</td>
-						<td>
-							<priorita stupen="u.p.properties.priorita" zapracovana="u.casZapracovania"></priorita>
-						</td>
-						<td>
-							<small>{{u.zadavatel}}</button></small>
-						</td>
-						<td>
-							<small ng-if="u.p.properties.cas">{{u.p.properties.cas}}</small>
-							<small ng-if="!u.p.properties.cas">-</small>
-						</td>
-						<td>
-							<small ng-if="u.zapracoval > 0">{{u.zapracoval}}</small>
-							<small ng-if="u.zapracoval == 0 || !u.zapracoval">-</small>
-						</td>
-						<td>
-							<small>{{u.casZapracovania | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</small>
-						</td>
-						<td>
-							<small>{{u.casZadania | date:'dd/MM/yyyy HH:mm'}}</small>
-						</td>
-					</tr>
-					</table>
-				</div>
-
-				<div ng-switch-when="projekty">
-					<table>
-					<tr>
-						<th>Meno</th>
-						<th>Počet pripomienok</th>
-						<th>Nesplnených</th>
-						<th>Zadávateľ projektu</th>
-					</tr>
-					<tr ng-repeat="u in $ctrl.udaje">
-						<td>
-							<button ng-click="$ctrl.ds.chod('/projekt/'+ u.n._id);">{{u.n.properties.meno}}</button>
-						</td>
-						<td>
-							{{u.pocetPripomienok}}
-						</td>
-						<td>
-							{{u.nesplnenePripomienky}}
-						</td>
-						<td>
-							<small>{{u.u.properties.meno}}</small>
-						</td>
-					</tr>
-					</table>
-				</div>
-
-				<div ng-switch-when="komentare">
-					<table>
-					<tr>
-						<th>Znenie</th>
-						<th>Kedy</th>
-						<th>Komentoval</th>
-					</tr>
-					<tr ng-repeat="u in $ctrl.udaje">
-						<td>
-							&mdash; {{u.znenie}}
-						</td>
-						<td>
-							{{u.kedy | date:'dd/MM/yyyy HH:mm'}}
-						</td>
-						<td>
-							{{u.komentator}}
-						</td>
-					</tr>
-					</table>
-				</div>
-			</div>
-			`,
+	templateUrl: 'app/zobrazudaje/zobrazUdaje.html',
 
 	controller: function(DataServis) {
 		var _this = this;

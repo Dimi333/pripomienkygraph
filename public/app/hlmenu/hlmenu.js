@@ -1,11 +1,5 @@
 app.component('hlmenu', {
-	template: ` <div class="hlmenu">
-					<button ng-click="$ctrl.chod('projekty')">Projekty</button>
-					<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.chod('uzivatelia')">Požívatelia</button>
-					<!--button ng-click="$ctrl.chod('pripomienky')">Pripomienky</button-->
-				<br><br>
-				</div>
-			`,
+	templateUrl: 'app/hlmenu/hlmenu.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;
@@ -14,7 +8,7 @@ app.component('hlmenu', {
 		_this.druhUdajov;
 
 		_this.chod = function(kam) {
-			$location.path(kam)
-		}
+			$location.path(kam);
+		};
 	}
 });

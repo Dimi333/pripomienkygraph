@@ -2,9 +2,7 @@ app.component('nadpis', {
 	bindings: {
 		pid: '<'
 	},
-	template: `
-			<h2>{{$ctrl.nadpis}}</h2>
-			`,
+	templateUrl: 'app/nadpis/nadpis.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;

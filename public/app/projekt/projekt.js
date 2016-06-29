@@ -2,11 +2,7 @@ app.component('projekt', {
 	bindings: {
 		pid: '@'
 	},
-	template: `
-			<pridaj co="pripomienka" pid="{{$ctrl.pid}}"></pridaj>
-			<br>
-			<pripomienky pid="{{$ctrl.pid}}"></pripomienky>
-			`,
+	templateUrl: 'app/projekt/projekt.html',
 
 	controller: function($http, $location, DataServis) {
 		var _this = this;

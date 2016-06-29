@@ -2,13 +2,7 @@ app.component('uzivatel', {
 	bindings: {
 		idu: "@"
 	},
-	template: `
-				ID: {{$ctrl.idu}}<br>
-				Meno: <input type="text" ng-model="$ctrl.meno"><br>
-				Heslo: <input type="text" ng-model="$ctrl.heslo"><br>
-				Mejl: <input type="text" ng-model="$ctrl.mejl"><br>
-				<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenUdajeUzivatela($ctrl.meno, $ctrl.heslo, $ctrl.mejl)">Ulož zmeny</button>
-			`,
+	templateUrl: 'app/uzivatel/uzivatel.html',
 
 	controller: function($http, DataServis, $rootScope) {
 		_this = this;

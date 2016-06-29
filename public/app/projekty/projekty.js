@@ -1,10 +1,7 @@
 app.component('projekty', {
-	template: `
-				<h2>Projekty</h2>
-				<zobraz-udaje udaje="$ctrl.vysledok" druh="$ctrl.druhUdajov"></zobraz-udaje>
-			`,
+	templateUrl: 'app/projekty/projekty.html',
 
-	controller: function($http, DataServis, $rootScope) {
+	controller: function(DataServis, $rootScope) {
 		_this = this;
 
 		_this.query = function(co) {
@@ -12,7 +9,7 @@ app.component('projekty', {
 				_this.vysledok = resp.data;
 				_this.druhUdajov = co;
 			});
-		}
+		};
 
 		_this.query('projekty');
 

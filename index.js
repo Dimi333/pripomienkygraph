@@ -90,12 +90,19 @@ app.post('/get/nacitajKomentare', function (req, res) {
 });
 app.post('/put/komentuj', function (req, res) {
 	db.cypher({
-		query: 'match (p:Pripomienka) where id(p)='+req.body.id+' optional match(u:Uzivatel) where  id(u)='+req.body.idu+' create (k:Komentar {znenie: "' + req.body.znenie + '"}), (u)-[v:KOMENTOVAL {kedy: '+Date.now()+'}]->(k), (k)-[v2:KOMENTAR_KU]->(p) return p, k, u, v'
+		query: 'match (p:Pripomienka) where id(p)='+req.body.id+' optional match(u:Uzivatel) where id(u)='+req.body.idu+' optional match(zap:Uzivatel)-[:ZAPRACOVAL]->(p) create (k:Komentar {znenie: "' + req.body.znenie + '"}), (u)-[v:KOMENTOVAL {kedy: '+Date.now()+'}]->(k), (k)-[v2:KOMENTAR_KU]->(p) return p, k, u, v, zap'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(results, null, 4));
-		posliMejl('oresansky@elet.sk', 'Komenár na tebou zapracovanú pripomienku', req.body.znenie);
+
+		try {
+			if(results[0].zap.properties.mejl) {
+				posliMejl(results[0].zap.properties.mejl, 'Komenár na tebou zapracovanú pripomienku', req.body.znenie);
+			}
+		} catch(err) {
+			console.log('Nieje zadaný mejl');
+		}
     });
 });
 app.get('/get/projekty', function (req, res) {
