@@ -6,6 +6,7 @@ app.component('pripomienka', {
 
 	controller: function($http, DataServis) {
 		var _this = this;
+                
 		_this.ds = DataServis;
 
 		_this.query = function(co, id) {
@@ -14,6 +15,7 @@ app.component('pripomienka', {
 				_this.zadavatel = resp.data[0].u.properties.meno;
 				_this.kedy = resp.data[0].v.properties.kedy;
 				_this.priorita = parseInt(resp.data[0].p.properties.priorita);
+                                _this.nacasovanie = parseInt(resp.data[0].p.properties.nacasovanie);
 				if(resp.data[0].p.properties.cas) {
 					_this.trvanie = parseInt(resp.data[0].p.properties.cas);
 				} else {

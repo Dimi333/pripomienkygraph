@@ -1,6 +1,7 @@
 var nastavenia = require('./nastavenia.js');
 var nastavenia = new nastavenia;
 
+var schedule = require('node-schedule');
 var cors = require('cors');
 var express = require('express');
 var neo4j = require('neo4j');
@@ -21,6 +22,23 @@ app.use(function(req, res, next) {
 });
 
 app.use(cors());
+
+//pri zapnuti pozrie vsetky pripomienky a tym, ktore maju nacasovanu ulohu (novsiu ako teraz) nacasuje ulohu
+db.cypher({
+    query: 'match(u:Pripomienka)<-[r:PRIPOMIENKOVAL]-(n) where u.nacasovanie > '+Date.now()+'  return u.znenie, n.mejl, r.kedy'
+}, function (err, res) {
+    if (err) throw err;
+    
+    var d;
+    
+    for(i=0; i<res.length; i++) {
+        d = new Date(parseInt(res[i]['r.kedy'])); //ms
+
+        var u = schedule.scheduleJob({hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds(), dayOfWeek: d.getDay()}, function(x, y) {
+            posliMejl(x, 'Načasovaná úloha', y);
+        }.bind(res[i]['n.mejl'], res[i]['u.znenie']));
+    }
+});
 
 app.post('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
@@ -89,20 +107,20 @@ app.post('/get/nacitajKomentare', function (req, res) {
     });
 });
 app.post('/put/komentuj', function (req, res) {
-	db.cypher({
-		query: 'match (p:Pripomienka) where id(p)='+req.body.id+' optional match(u:Uzivatel) where id(u)='+req.body.idu+' optional match(zap:Uzivatel)-[:ZAPRACOVAL]->(p) create (k:Komentar {znenie: "' + req.body.znenie + '"}), (u)-[v:KOMENTOVAL {kedy: '+Date.now()+'}]->(k), (k)-[v2:KOMENTAR_KU]->(p) return p, k, u, v, zap'
+    db.cypher({
+	query: 'match (p:Pripomienka) where id(p)='+req.body.id+' optional match(u:Uzivatel) where id(u)='+req.body.idu+' optional match(zap:Uzivatel)-[:ZAPRACOVAL]->(p) create (k:Komentar {znenie: "' + req.body.znenie + '"}), (u)-[v:KOMENTOVAL {kedy: '+Date.now()+'}]->(k), (k)-[v2:KOMENTAR_KU]->(p) return p, k, u, v, zap'
     }, function (err, results) {
         if (err) throw err;
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(results, null, 4));
 
-		try {
-			if(results[0].zap.properties.mejl) {
-				posliMejl(results[0].zap.properties.mejl, 'Komenár na tebou zapracovanú pripomienku', req.body.znenie);
-			}
-		} catch(err) {
-			console.log('Nieje zadaný mejl');
-		}
+            try {
+                if(results[0].zap.properties.mejl) {
+                    posliMejl(results[0].zap.properties.mejl, 'Komenár na tebou zapracovanú pripomienku', req.body.znenie);
+                }
+            } catch(err) {
+                    console.log('Nieje zadaný mejl = asi to ešte nikto nezapracoval');
+            }
     });
 });
 app.get('/get/projekty', function (req, res) {
@@ -123,20 +141,38 @@ app.post('/put/projekt', function (req, res) {
         res.end(JSON.stringify(results, null, 4));
     });
 });
-app.post('/put/pripomienka', function (req, res) {
+app.post('/put/pripomienka', function (req, res) {          
     db.cypher({
-        query: 'match(u:Uzivatel), (r:Projekt) where ID(r)='+req.body.projektID+' and ID(u)='+req.body.zadavatelID+' create (p:Pripomienka {znenie: "'+ req.body.znenie.replace(/['"]+/g, '')+'", priorita: '+req.body.priorita+'}), (u)-[v:PRIPOMIENKOVAL {kedy: "'+Date.now()+'"}]->(p), (p)-[v2:PATRI]->(r) return u, v, r'
+        query: 'match(u:Uzivatel), (r:Projekt) where ID(r)='+req.body.projektID+' and ID(u)='+req.body.zadavatelID+' create (p:Pripomienka {znenie: "'+ req.body.znenie.replace(/['"]+/g, '')+'", priorita: '+req.body.priorita+'}), (u)-[v:PRIPOMIENKOVAL {kedy: "'+Date.now()+'"}]->(p), (p)-[v2:PATRI]->(r) return u.mejl as mejl, v, r'
     }, function (err, results) {
         if (err) throw err;
+        
+        if(typeof req.body.nacasovanie !== 'undefined') {
+            var d = new Date(req.body.nacasovanie); //ms
+
+            var u = schedule.scheduleJob({hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds(), dayOfWeek: d.getDay()}, function(x, y) {
+                posliMejl(x, 'Načasovaná úloha', y);
+            }.bind(null, results[0].mejl, req.body.znenie));
+        }
+    
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(results, null, 4));
     });
 });
 app.post('/put/zmenPripomienku', function (req, res) {
     db.cypher({
-        query: 'match(p:Pripomienka) where ID(p)='+req.body.id+' set p.znenie = "'+req.body.znenie.replace(/['"]+/g, '')+'", p.priorita = '+req.body.priorita+', p.cas = '+req.body.trvanie
+        query: 'match(p:Pripomienka)<-[:PRIPOMIENKOVAL]-(u) where ID(p)='+req.body.id+' set p.znenie = "'+req.body.znenie.replace(/['"]+/g, '')+'", p.priorita = '+req.body.priorita+', p.cas = '+req.body.trvanie+', p.nacasovanie = '+req.body.nacasovanie +' return p.znenie as znenie, u.mejl as mejl'
     }, function (err, results) {
         if (err) throw err;
+        
+        if(req.body.nacasovanie) {
+            var d = new Date(req.body.nacasovanie); //ms
+
+            var u = schedule.scheduleJob({hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds(), dayOfWeek: d.getDay()}, function(x, y) {
+                posliMejl(x, 'Načasovaná úloha', y);
+            }.bind(null, results[0].mejl, results[0].znenie));
+        }
+    
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(results, null, 4));
     });
@@ -200,9 +236,9 @@ var posliMejl = function(komu, predmet, obsah) {
 	// verify connection configuration
 	transporter.verify(function(error, success) {
 	   if (error) {
-			console.log(error);
+            console.log(error);
 	   } else {
-			console.log('Server is ready to take our messages');
+            console.log('Server is ready to take our messages');
 	   }
 	});
 
@@ -217,6 +253,6 @@ var posliMejl = function(komu, predmet, obsah) {
 
 	// send mail with defined transport object
 	transporter.sendMail(mailOptions, function(error, info){
-		console.log(error);
+            console.log(error);
 	});
 }

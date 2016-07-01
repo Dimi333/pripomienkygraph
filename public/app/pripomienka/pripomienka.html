@@ -1,4 +1,4 @@
-<h2>Pripomienka</h2>
+<h2>◻ Pripomienka</h2>
 <table class="pripomienka">
 <tr>
         <th></th>
@@ -25,8 +25,12 @@
         <td><input type="text" ng-model="$ctrl.trvanie"> min</td>
 </tr>
 <tr>
-        <td>Čas zapracovania</td>
+        <td>Dátum zapracovania</td>
         <td>{{$ctrl.zapracovane | date:'dd/MM/yyyy HH:mm' | akNieje: '-'}}</td>
+</tr>
+<tr>
+        <td>Načasovanie</td>
+        <td><input type="datetime-local" ng-model="$ctrl.nacasovanie"></td>
 </tr>
 <tr>
         <td>Čas zadania</td>
@@ -42,7 +46,7 @@
 </tr>
 </table>
 <br>
-<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita, $ctrl.trvanie);">Zmeň pripomienku</button>
+<button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenPripomienku($ctrl.id, $ctrl.znenie, $ctrl.priorita, $ctrl.trvanie, $ctrl.nacasovanie);">Zmeň pripomienku</button>
 
 <br><br>
 <komentare id="$ctrl.id"></komentare>

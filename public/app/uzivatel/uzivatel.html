@@ -1,5 +1,19 @@
-ID: {{$ctrl.idu}}<br>
-Meno: <input type="text" ng-model="$ctrl.meno"><br>
-Heslo: <input type="text" ng-model="$ctrl.heslo"><br>
-Mejl: <input type="text" ng-model="$ctrl.mejl"><br>
+<table>
+    <tr>
+        <td>ID:</td>
+        <td>{{$ctrl.idu}}</td>
+    </tr>
+    <tr>
+        <td>Meno:</td>
+        <td><input type="text" ng-model="$ctrl.meno"></td>
+    </tr>
+    <tr>
+        <td>Heslo:</td>
+        <td><input type="text" ng-model="$ctrl.heslo"></td>
+    </tr>
+    <tr>
+        <td>Mejl:</td>
+        <td><input type="text" ng-model="$ctrl.mejl"></td>
+    </tr>
+</table>
 <button ng-show="$ctrl.ds.prihlaseny" ng-click="$ctrl.ds.zmenUdajeUzivatela($ctrl.meno, $ctrl.heslo, $ctrl.mejl)">Ulož zmeny</button>
